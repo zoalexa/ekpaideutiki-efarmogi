@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>Προχωρημένες Ασκήσεις</title>
+
+<style>
+body { font-family: Arial; background:#eef6f9; margin:0; }
+
+header{
+  background:#1976d2;
+  color:white;
+  padding:15px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+#modeSelection{
+  text-align:center;
+  margin:60px 0;
+}
+
+#modeSelection button{
+  padding:12px 25px;
+  margin:15px;
+  border:none;
+  border-radius:6px;
+  font-weight:bold;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.practice-btn{ background:#2ecc71; color:white; }
+.exam-btn{ background:#e74c3c; color:white; }
+
+#progressContainer{
+  height:6px;
+  background:#ddd;
+}
+
+#progressBar{
+  height:6px;
+  width:0%;
+  background:#2ecc71;
+  transition:0.3s;
+}
+
+#quizBox{
+  max-width:900px;
+  margin:30px auto;
+  background:white;
+  padding:25px;
+  border-radius:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  display:none;
+}
+
+.answers label{
+  display:block;
+  padding:8px;
+  margin-bottom:6px;
+  background:#f1f1f1;
+  border-radius:5px;
+}
+
+.answers select{
+  margin:5px 0 15px 0;
+  padding:5px;
+}
+
+.buttons{
+  margin-top:20px;
+  display:flex;
+  justify-content:space-between;
+}
+
+button{
+  padding:8px 14px;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.submit-btn{ background:#388e3c; color:white; }
+.skip-btn{ background:#f57c00; color:white; }
+
+.navigation{
+  margin-top:25px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  justify-content:center;
+}
+
+.navigation button{
+  background:#444;
+  color:white;
+  padding:6px 10px;
+}
+
+.navigation button.answered{ background:#2ecc71; }
+.navigation button.skipped{ background:#f39c12; }
+.navigation button.current{ border:2px solid #1976d2; }
+
+#resultBox{
+  display:none;
+  max-width:700px;
+  margin:40px auto;
+  background:white;
+  padding:25px;
+  border-radius:10px;
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div id="questionCounter">Ερώτηση 1</div>
+  <div id="timer">⏱ 0 δευτερόλεπτα</div>
+</header>
+
+<div id="modeSelection">
+  <h2>Επιλογή Τύπου Άσκησης</h2>
+  <button class="practice-btn" onclick="startQuiz('practice')">Practice</button>
+  <button class="exam-btn" onclick="startQuiz('exam')">Exam</button>
+</div>
+
+<div id="progressContainer">
+  <div id="progressBar"></div>
+</div>
+
+<div id="quizBox">
+  <div id="questionText"></div>
+  <img id="questionImage" style="width:100%;max-height:220px;object-fit:contain;margin-bottom:20px;">
+  <div class="answers" id="answersBox"></div>
+
+  <div class="buttons">
+    <button class="skip-btn" onclick="skipQuestion()">Παράλειψη</button>
+    <button class="submit-btn" onclick="submitAnswer()">Υποβολή</button>
+  </div>
+
+  <div class="navigation" id="navigation"></div>
+</div>
+
+<div id="resultBox">
+  <h2>Ολοκλήρωση Άσκησης</h2>
+  <p id="finalTime"></p>
+  <p id="finalScore"></p>
+  <p id="finalMessage"></p>
+</div>
+
+<script>
+
+/* ================= ΕΡΩΤΗΣΕΙΣ ================= */
+
+const questions = [
+
+{
+type:"group_tf",
+q:"ΣΩΣΤΟ ή ΛΑΘΟΣ;",
+img:"../images/advanced/q1.jpg",
+statements:[
+["Σε παράλληλη σύνδεση λαμπών, αν καεί μία λάμπα οι υπόλοιπες συνεχίζουν να λειτουργούν.",true],
+["Σε σύνδεση σε σειρά η τάση μοιράζεται στα φορτία.",true],
+["Βραχυκύκλωμα συμβαίνει όταν η φάση έρθει σε άμεση επαφή με τον ουδέτερο.",true],
+["Η γείωση χρησιμοποιείται για να μεταφέρει το κανονικό ρεύμα λειτουργίας.",false],
+["Η ασφάλεια προστατεύει το κύκλωμα από υπερβολικό ρεύμα.",true],
+["Ο διακόπτης πρέπει να διακόπτει τον ουδέτερο και όχι την φάση.",false]
+]
+},
+
+{
+type:"fill",
+q:"Συμπλήρωση κενών",
+img:"../images/advanced/q2.jpg",
+lines:[
+["Σε παράλληλη σύνδεση όλα τα φορτία έχουν την ίδια ________. ",["τάση"]],
+["Σε σύνδεση σε σειρά το ίδιο ________ περνά από όλα τα φορτία.",["ρεύμα"]],
+["Η ________ προστατεύει το κύκλωμα από υπερφόρτωση.",["ασφάλεια"]],
+["Το ________ διακόπτει το ρεύμα σε περίπτωση διαρροής προς γη.",["ρελέ"]],
+["Η ________ χρησιμοποιείται για την προστασία του χρήστη από ηλεκτροπληξία.",["γείωση"]]
+],
+bank:["τάση","ρεύμα","ασφάλεια","ρελέ","γείωση"]
+},
+
+{
+type:"matching",
+q:"Αντιστοίχιση στοιχείων με τη λειτουργία τους",
+img:"../images/advanced/q3.jpg",
+pairs:[
+["Ασφάλεια","Προστασία από υπερφόρτωση"],
+["Ρελέ διαρροής","Προστασία από διαρροή ρεύματος"],
+["Διακόπτης","Έλεγχος λειτουργίας κυκλώματος"],
+["Γείωση","Προστασία από ηλεκτροπληξία"]
+]
+},
+
+{
+type:"mcq",
+q:"Σε ένα κύκλωμα φωτισμού σπιτιού οι λάμπες συνδέονται συνήθως:",
+img:"../images/advanced/q4.jpg",
+a:[
+"Παράλληλα",
+"Σε σειρά",
+"Τυχαία",
+"Μικτή σύνδεση"
+],
+correct:0
+},
+
+{
+type:"mcq",
+q:"Τι συμβαίνει σε ένα κύκλωμα όταν προκύψει βραχυκύκλωμα;",
+img:"../images/advanced/q5.jpg",
+a:[
+"Το ρεύμα αυξάνεται απότομα",
+"Η τάση μηδενίζεται",
+"Το κύκλωμα λειτουργεί κανονικά",
+"Η κατανάλωση μειώνεται"
+],
+correct:0
+},
+
+{
+type:"mcq",
+q:"Ποιος είναι ο κύριος σκοπός της γείωσης σε μια εγκατάσταση;",
+img:"../images/advanced/q6.jpg",
+a:[
+"Να προστατεύει τον χρήστη από ηλεκτροπληξία",
+"Να αυξάνει την τάση",
+"Να μειώνει το ρεύμα",
+"Να λειτουργεί ως ουδέτερος"
+],
+correct:0
+},
+
+{
+type:"mcq",
+q:"Σε ένα κύκλωμα αλερετούρ, πόσοι διακόπτες ελέγχουν μία λάμπα;",
+img:"../images/advanced/q7.jpg",
+a:[
+"Δύο",
+"Ένας",
+"Τρεις",
+"Τέσσερις"
+],
+correct:0
+},
+
+{
+type:"mcq",
+q:"Ποια συσκευή προστασίας ενεργοποιείται όταν υπάρχει διαρροή ρεύματος προς τη γείωση;",
+img:"../images/advanced/q8.jpg",
+a:[
+"Ρελέ διαρροής",
+"Ασφάλεια",
+"Διακόπτης",
+"Μετασχηματιστής"
+],
+correct:0
+},
+
+{
+type:"mcq",
+q:"Τι προκαλεί υπερφόρτωση σε μια γραμμή;",
+img:"../images/advanced/q9.jpg",
+a:[
+"Πολλές συσκευές στην ίδια γραμμή",
+"Χαμηλή τάση",
+"Κακή γείωση",
+"Ανοιχτό κύκλωμα"
+],
+correct:0
+},
+
+{
+type:"mcq",
+q:"Σε περίπτωση πτώσης της ασφάλειας πρέπει πρώτα:",
+img:"../images/advanced/q10.jpg",
+a:[
+"Να ελεγχθεί το κύκλωμα για βλάβη",
+"Να επαναφέρουμε την ασφάλεια αμέσως",
+"Να αντικαταστήσουμε την πρίζα",
+"Να αλλάξουμε τον διακόπτη"
+],
+correct:0
+}
+
+];
+/* ================= ΜΗΧΑΝΙΣΜΟΣ  ================= */
+
+let currentQuestion=0;
+let answers=[];
+let skipped=[];
+let score=0;
+let startTime;
+let timerInterval;
+let mode=null;
+let quizQuestions=[];
+let firstRound=true;
+
+function shuffleArray(array){
+  const arr=[...array];
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function startQuiz(selectedMode){
+  mode=selectedMode;
+  document.getElementById("modeSelection").style.display="none";
+  document.getElementById("quizBox").style.display="block";
+
+  quizQuestions = mode==="exam" ? shuffleArray(questions) : [...questions];
+
+  answers=new Array(quizQuestions.length).fill(null);
+  skipped=new Array(quizQuestions.length).fill(false);
+  currentQuestion=0;
+  score=0;
+  firstRound=true;
+
+  startTimer();
+  loadQuestion();
+}
+
+function formatTime(sec){
+  const m=Math.floor(sec/60);
+  const s=sec%60;
+  if(m===0) return s+" δευτερόλεπτα";
+  return m+" λεπτά και "+s+" δευτερόλεπτα";
+}
+
+function startTimer(){
+  startTime=Date.now();
+  timerInterval=setInterval(()=>{
+    const diff=Math.floor((Date.now()-startTime)/1000);
+    document.getElementById("timer").innerText="⏱ "+formatTime(diff);
+  },1000);
+}
+
+function loadQuestion(){
+  const q=quizQuestions[currentQuestion];
+
+  document.getElementById("questionCounter").innerText=
+    `Ερώτηση ${currentQuestion+1} / ${quizQuestions.length}`;
+
+  document.getElementById("questionText").innerText=q.q;
+  document.getElementById("questionImage").src=q.img || "";
+
+  const box=document.getElementById("answersBox");
+  box.innerHTML="";
+
+  if(q.type==="group_tf"){
+    q.statements.forEach((s,i)=>{
+      const div=document.createElement("div");
+      div.innerHTML = `
+        ${s[0]}<br>
+        <select data-index="${i}">
+          <option value="">Επιλογή</option>
+          <option value="true">Σωστό</option>
+          <option value="false">Λάθος</option>
+        </select><br><br>
+      `;
+      box.appendChild(div);
+    });
+  }
+
+  if(q.type==="fill"){
+    let html = "";
+    q.lines.forEach(line=>{
+        let text = line[0];
+        text = text.replace(/_+/g, () => {
+            const options = shuffleArray(q.bank)
+              .map(w=>`<option value="${w}">${w}</option>`)
+              .join("");
+            return `<select class="fill-select"><option value="">Επιλογή</option>${options}</select>`;
+        });
+        html += text + "<br><br>";
+    });
+    box.innerHTML = html;
+  }
+
+  if(q.type==="matching"){
+    q.pairs.forEach((p,i)=>{
+      box.innerHTML+=`
+      ${p[0]} :
+      <select data-index="${i}">
+        <option value="">Επιλογή</option>
+        ${q.pairs.map(x=>`<option value="${x[1]}">${x[1]}</option>`).join("")}
+      </select><br><br>`;
+    });
+  }
+
+  if(q.type==="mcq"){
+    q.a.forEach((opt,i)=>{
+      box.innerHTML+=`
+      <label>
+      <input type="radio" name="answer" value="${i}">
+      ${opt}
+      </label>`;
+    });
+  }
+
+  updateProgress();
+  renderNavigation();
+}
+
+function submitAnswer(){
+  if(answers[currentQuestion]!==null) return;
+
+  const q=quizQuestions[currentQuestion];
+  let correct=false;
+
+  if(q.type==="mcq"){
+    const selected=document.querySelector('input[name="answer"]:checked');
+    if(!selected) return alert("Επίλεξε απάντηση!");
+    correct=parseInt(selected.value)===q.correct;
+  }
+
+  if(q.type==="group_tf"){
+    const selects=document.querySelectorAll("select");
+    if([...selects].some(s=>s.value==="")) return alert("Συμπλήρωσε όλα τα πεδία!");
+    correct=[...selects].every((s,i)=>String(q.statements[i][1])===s.value);
+  }
+
+  if(q.type==="fill"){
+    const selects=document.querySelectorAll(".fill-select");
+    if([...selects].some(s=>s.value==="")) return alert("Συμπλήρωσε όλα τα πεδία!");
+    let index=0;
+    correct=true;
+    q.lines.forEach(line=>{
+      line[1].forEach(word=>{
+        if(selects[index].value!==word) correct=false;
+        index++;
+      });
+    });
+  }
+
+  if(q.type==="matching"){
+    const selects=document.querySelectorAll("select");
+    if([...selects].some(s=>s.value==="")) return alert("Συμπλήρωσε όλα τα πεδία!");
+    correct=[...selects].every((s,i)=>s.value===q.pairs[i][1]);
+  }
+
+  answers[currentQuestion]=true;
+  skipped[currentQuestion]=false;
+  if(correct) score++;
+
+  nextStep();
+}
+
+function skipQuestion(){
+  if(answers[currentQuestion]===null)
+    skipped[currentQuestion]=true;
+  nextStep();
+}
+
+function nextStep(){
+  if(currentQuestion < quizQuestions.length-1){
+    currentQuestion++;
+    loadQuestion();
+  }else{
+    if(firstRound){
+      firstRound=false;
+      const firstSkipped=skipped.findIndex((s,i)=>s && answers[i]===null);
+      if(firstSkipped!==-1){
+        currentQuestion=firstSkipped;
+        loadQuestion();
+        return;
+      }
+    }
+    attemptFinish();
+  }
+}
+
+function attemptFinish(){
+  if(answers.includes(null)){
+    alert("Υπάρχουν αναπάντητες ερωτήσεις.");
+    return;
+  }
+  if(confirm("Θέλεις οριστική υποβολή;")){
+    finishQuiz();
+  }
+}
+
+function finishQuiz(){
+  clearInterval(timerInterval);
+  const total=Math.floor((Date.now()-startTime)/1000);
+
+  document.getElementById("quizBox").style.display="none";
+  document.getElementById("resultBox").style.display="block";
+
+  document.getElementById("finalTime").innerText=
+    "Συνολικός χρόνος: "+formatTime(total);
+
+  document.getElementById("finalScore").innerText=
+    `Σκορ: ${score} / ${quizQuestions.length}`;
+
+  const percent=(score/quizQuestions.length)*100;
+  const msg=document.getElementById("finalMessage");
+
+  if(percent>=85) 
+    msg.innerText="🎉 Εξαιρετική επίδοση! Συνέχισε έτσι.";
+  else if(percent>=60)
+    msg.innerText="👍 Καλή προσπάθεια! Λίγη επανάληψη θα σε βελτιώσει.";
+  else 
+    msg.innerText="📘 Χρειάζεσαι επανάληψη στην θεωρία.";
+}
+
+function updateProgress(){
+  const answeredCount=answers.filter(a=>a!==null).length;
+  const percent=(answeredCount/quizQuestions.length)*100;
+  document.getElementById("progressBar").style.width=percent+"%";
+}
+
+function renderNavigation(){
+  const nav=document.getElementById("navigation");
+  nav.innerHTML="";
+  quizQuestions.forEach((_,i)=>{
+    const btn=document.createElement("button");
+    btn.innerText=i+1;
+
+    if(i===currentQuestion) btn.classList.add("current");
+    else if(answers[i]!==null) btn.classList.add("answered");
+    else if(skipped[i]) btn.classList.add("skipped");
+
+    btn.onclick=()=>{currentQuestion=i;loadQuestion();}
+    nav.appendChild(btn);
+  });
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Ασκησιολόγιο</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #eef6f9, #ffffff);
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 40px;
+    }
+
+    /* ===== VIEW TOGGLE BUTTON ===== */
+    .view-toggle {
+      max-width: 1100px;
+      margin: 0 auto 20px auto;
+      text-align: right;
+    }
+
+    .view-toggle button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #333;
+      color: white;
+      font-size: 14px;
+    }
+
+    .view-toggle button:hover {
+      background: #000;
+    }
+
+    /* ===== GRID ===== */
+    .homework-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    /* ===== LIST VIEW ===== */
+    .homework-grid.list-view {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .homework-grid.list-view .homework-card {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .homework-grid.list-view .homework-card img {
+      width: 180px;
+      height: 120px;
+    }
+
+    .homework-grid.list-view .homework-content {
+      flex: 1;
+    }
+
+    .homework-grid.list-view .homework-footer {
+      border-top: none;
+    }
+
+    /* ===== CARDS ===== */
+    .homework-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .homework-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .homework-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .homework-content {
+      padding: 20px;
+      flex-grow: 1;
+    }
+
+    .homework-content h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .homework-content p {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .homework-footer {
+      padding: 15px 20px;
+      border-top: 1px solid #eee;
+      text-align: right;
+    }
+
+    .homework-footer button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      color: white;
+    }
+
+    .btn-blue { background-color: #1976d2; }
+    .btn-green { background-color: #388e3c; }
+    .btn-orange { background-color: #f57c00; }
+    .btn-purple { background-color: #7b1fa2; }
+
+    .btn-blue:hover { background-color: #0d47a1; }
+    .btn-green:hover { background-color: #1b5e20; }
+    .btn-orange:hover { background-color: #e65100; }
+    .btn-purple:hover { background-color: #4a148c; }
+
+    .bar-blue { border-top: 5px solid #1976d2; }
+    .bar-green { border-top: 5px solid #388e3c; }
+    .bar-orange { border-top: 5px solid #f57c00; }
+    .bar-purple { border-top: 5px solid #7b1fa2; }
+
+  </style>
+</head>
+<body>
+
+<h1>Ασκησιολόγιο</h1>
+<div class="subtitle">
+  Ασκήσεις για πρακτική εξάσκηση και κατανόηση των οικιακών ηλεκτρολογικών κυκλωμάτων.
+</div>
+
+<!-- VIEW BUTTON + HOME BUTTON -->
+<div class="view-toggle">
+  <a href="../index.html">
+    <button style="margin-right: 10px; background:#1976d2;">🏠 Home</button>
+  </a>
+  <button id="viewBtn">Grid View</button>
+</div>
+
+<!-- DEFAULT LIST VIEW -->
+<div class="homework-grid list-view" id="homeworkContainer">
+
+  <div class="homework-card bar-blue">
+    <img src="../images/homework-basic.jpg" alt="Βασικές Ασκήσεις">
+    <div class="homework-content">
+      <h3>Βασικές Ασκήσεις</h3>
+      <p>Απλές ασκήσεις για αρχάριους σχετικά με κυκλώματα τύπου διακόπτη-λάμπας κ.λπ.</p>
+    </div>
+    <div class="homework-footer">
+      <a href="basic.html">
+        <button class="btn-blue">Άνοιγμα</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="homework-card bar-green">
+    <img src="../images/homework-advanced.jpg" alt="Προχωρημένες Ασκήσεις">
+    <div class="homework-content">
+      <h3>Προχωρημένες Ασκήσεις</h3>
+      <p>Σύνθετα κυκλώματα, συνδεσμολογία σε σειρά, παράλληλα και αλληλεπιδράσεις.</p>
+    </div>
+    <div class="homework-footer">
+      <a href="advanced.html">
+        <button class="btn-green">Άνοιγμα</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="homework-card bar-orange">
+    <img src="../images/homework-simulation.jpg" alt="Προσομοιώσεις Κυκλωμάτων">
+    <div class="homework-content">
+      <h3>Προσομοιώσεις Κυκλωμάτων</h3>
+      <p>Διαδραστικά σενάρια για εξάσκηση σε κυκλώματα τύπου αλερετούρ κ.ά.</p>
+    </div>
+    <div class="homework-footer">
+      <a href="../scenarios/scenarios.html">
+        <button class="btn-orange">Άνοιγμα</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="homework-card bar-purple">
+    <img src="../images/homework-quiz.jpg" alt="Quiz & Ερωτήσεις">
+    <div class="homework-content">
+      <h3>Quiz & Ερωτήσεις</h3>
+      <p>Γρήγορες ερωτήσεις για να ελέγξετε την κατανόηση σας.</p>
+    </div>
+    <div class="homework-footer">
+      <a href="quiz.html">
+        <button class="btn-purple">Άνοιγμα</button>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const viewBtn = document.getElementById("viewBtn");
+  const container = document.getElementById("homeworkContainer");
+
+  viewBtn.addEventListener("click", function () {
+    container.classList.toggle("list-view");
+
+    if (container.classList.contains("list-view")) {
+      viewBtn.textContent = "Grid View";
+    } else {
+      viewBtn.textContent = "List View";
+    }
+  });
+</script>
+
+</body>
+</html>

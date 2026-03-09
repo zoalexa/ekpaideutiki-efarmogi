@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>Quiz – Επιλογή Ενότητας</title>
+
+<link rel="stylesheet" href="../style.css">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #eef6f9, #ffffff);
+  padding: 40px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+/* ===== VIEW TOGGLE BUTTON ===== */
+.view-toggle {
+  max-width: 1100px;
+  margin: 0 auto 20px auto;
+  text-align: right;
+}
+
+.view-toggle button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #333;
+  color: white;
+  font-size: 14px;
+}
+
+.view-toggle button:hover {
+  background: #000;
+}
+
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* ===== DEFAULT LIST VIEW ===== */
+.quiz-grid.list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.quiz-grid.list-view .quiz-card {
+  flex-direction: row;
+  align-items: center;
+}
+
+.quiz-grid.list-view .quiz-card img {
+  width: 180px;
+  height: 120px;
+}
+
+.quiz-grid.list-view .quiz-content {
+  flex: 1;
+}
+
+.quiz-grid.list-view .quiz-footer {
+  border-top: none;
+}
+
+.quiz-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.quiz-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.quiz-content {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.quiz-content h3 {
+  margin-top: 0;
+}
+
+.quiz-content p {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.5;
+}
+
+.quiz-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  text-align: right;
+}
+
+.quiz-footer button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: white;
+}
+
+.btn-blue { background:#1976d2; }
+.btn-green { background:#388e3c; }
+.btn-orange { background:#f57c00; }
+.btn-red { background:#d32f2f; }
+.btn-purple { background:#7b1fa2; }
+
+.btn-blue:hover { background:#0d47a1; }
+.btn-green:hover { background:#1b5e20; }
+.btn-orange:hover { background:#e65100; }
+.btn-red:hover { background:#b71c1c; }
+.btn-purple:hover { background:#4a148c; }
+
+.bar-blue { border-top:5px solid #1976d2; }
+.bar-green { border-top:5px solid #388e3c; }
+.bar-orange { border-top:5px solid #f57c00; }
+.bar-red { border-top:5px solid #d32f2f; }
+.bar-purple { border-top:5px solid #7b1fa2; }
+</style>
+
+</head>
+
+<body>
+
+<h1>Quiz Οικιακής Ηλεκτρολογίας</h1>
+<div class="subtitle">
+  Επέλεξε ενότητα για να ξεκινήσεις το quiz
+</div>
+
+<!-- VIEW BUTTON -->
+<div class="view-toggle">
+  <button onclick="toggleView()" id="viewBtn">Grid View</button>
+</div>
+
+<!-- DEFAULT LIST VIEW -->
+<div class="quiz-grid list-view" id="quizContainer">
+
+<!-- ΕΝΟΤΗΤΕΣ -->
+
+  <!-- ΕΝΟΤΗΤΑ 1 -->
+  <div class="quiz-card bar-blue">
+    <img src="../images/quiz-basic.jpg">
+    <div class="quiz-content">
+      <h3>Ενότητα 1 – Εισαγωγή</h3>
+      <p>
+        Βασικές έννοιες οικιακής ηλεκτρολογίας, ασφάλεια,
+        φάση – ουδέτερος – γείωση.
+      </p>
+      <p><b>15 ερωτήσεις</b> | Εύκολη</p>
+    </div>
+    <div class="quiz-footer">
+      <button class="btn-blue" onclick="startQuiz(1)">Έναρξη</button>
+    </div>
+  </div>
+
+  <!-- ΕΝΟΤΗΤΑ 2 -->
+  <div class="quiz-card bar-green">
+    <img src="../images/quiz-medium.jpg">
+    <div class="quiz-content">
+      <h3>Ενότητα 2 – Κυκλώματα</h3>
+      <p>
+        Διακόπτης – λάμπα, βασικές συνδεσμολογίες
+        και ροή ρεύματος.
+      </p>
+      <p><b>15 ερωτήσεις</b> | Μεσαία</p>
+    </div>
+    <div class="quiz-footer">
+      <button class="btn-green" onclick="startQuiz(2)">Έναρξη</button>
+    </div>
+  </div>
+
+  <!-- ΕΝΟΤΗΤΑ 3 -->
+  <div class="quiz-card bar-orange">
+    <img src="../images/quiz-advanced.jpg">
+    <div class="quiz-content">
+      <h3>Ενότητα 3 – Συνδεσμολογίες</h3>
+      <p>
+        Αλερετούρ, ρόλος αγωγών, λάθη συνδεσμολογίας.
+      </p>
+      <p><b>15 ερωτήσεις</b> | Προχωρημένη</p>
+    </div>
+    <div class="quiz-footer">
+      <button class="btn-orange" onclick="startQuiz(3)">Έναρξη</button>
+    </div>
+  </div>
+
+  <!-- ΕΝΟΤΗΤΑ 4 -->
+  <div class="quiz-card bar-red">
+    <img src="../images/quiz-safety.jpg">
+    <div class="quiz-content">
+      <h3>Ενότητα 4 – Ασφάλεια & Βλάβες</h3>
+      <p>
+        Σενάρια βλάβης, επικίνδυνες συνδέσεις,
+        διάγνωση προβλημάτων.
+      </p>
+      <p><b>15 ερωτήσεις</b> | Δύσκολη</p>
+    </div>
+    <div class="quiz-footer">
+      <button class="btn-red" onclick="startQuiz(4)">Έναρξη</button>
+    </div>
+  </div>
+
+  <!-- ΕΝΟΤΗΤΑ 5 -->
+  <div class="quiz-card bar-purple">
+    <img src="../images/quiz-random.jpg">
+    <div class="quiz-content">
+      <h3>Τυχαίο Quiz</h3>
+      <p>
+        40 τυχαίες ερωτήσεις από όλες τις ενότητες.
+      </p>
+      <p><b>40 ερωτήσεις</b> | Μικτό</p>
+    </div>
+    <div class="quiz-footer">
+      <button class="btn-purple" onclick="startQuiz(5)">Έναρξη</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+function startQuiz(level) {
+  let page = "";
+
+  switch(level) {
+    case 1: page = "1st-exam.html"; break;
+    case 2: page = "2nd-exam.html"; break;
+    case 3: page = "3rd-exam.html"; break;
+    case 4: page = "4th-exam.html"; break;
+    case 5: page = "random-exam.html"; break;
+  }
+
+  window.open(page, "_blank");
+}
+
+/* ===== VIEW TOGGLE ===== */
+function toggleView() {
+  const container = document.getElementById("quizContainer");
+  const btn = document.getElementById("viewBtn");
+
+  container.classList.toggle("list-view");
+
+  if (container.classList.contains("list-view")) {
+    btn.innerText = "Grid View";
+  } else {
+    btn.innerText = "List View";
+  }
+}
+
+</script>
+
+
+</body>
+</html>

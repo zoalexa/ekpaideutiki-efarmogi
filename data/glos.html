@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Γλωσσάριο — Λεξικό Όρων</title>
+
+<style>
+:root{
+--accent:#1e90ff;
+--bg:#f4f8fc;
+--card:#ffffff;
+--muted:#6b7a8a;
+}
+
+body{
+margin:0;
+font-family:"Segoe UI",Tahoma,sans-serif;
+background:var(--bg);
+color:#17202a;
+}
+
+header{
+background:linear-gradient(90deg,var(--accent),#246fb0);
+color:white;
+padding:16px 22px;
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+header h1{
+margin:0;
+font-size:1.2rem;
+}
+
+.wrap{
+display:flex;
+gap:20px;
+padding:20px;
+}
+
+.list{
+width:340px;
+background:var(--card);
+border-radius:12px;
+padding:16px;
+border:1px solid rgba(0,0,0,0.08);
+box-shadow:0 6px 18px rgba(0,0,0,0.06);
+}
+
+.list h2{
+margin-top:0;
+color:var(--accent);
+}
+
+.search{
+width:100%;
+padding:8px;
+border-radius:8px;
+border:1px solid #ccc;
+margin-bottom:12px;
+}
+
+.term{
+display:flex;
+flex-direction:column;
+padding:10px;
+border-radius:10px;
+cursor:pointer;
+margin-bottom:8px;
+transition:0.2s;
+border:1px solid transparent;
+}
+
+.term:hover{
+background:#eef6ff;
+border-color:#cfe6ff;
+}
+
+.term.active{
+background:#dceeff;
+border-color:#7fbfff;
+}
+
+.term .title{
+font-weight:600;
+}
+
+.term .short{
+font-size:0.85rem;
+color:var(--muted);
+}
+
+.content{
+flex:1;
+background:var(--card);
+border-radius:12px;
+padding:24px;
+border:1px solid rgba(0,0,0,0.08);
+min-height:420px;
+box-shadow:0 6px 18px rgba(0,0,0,0.06);
+}
+
+.content h2{
+margin-top:0;
+color:var(--accent);
+}
+
+.fade{
+animation:fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(6px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.btn-row{
+display:flex;
+gap:10px;
+margin-top:20px;
+flex-wrap:wrap;
+}
+
+.btn{
+background:var(--accent);
+color:white;
+border:none;
+padding:9px 14px;
+border-radius:8px;
+cursor:pointer;
+font-size:0.9rem;
+}
+
+.btn.alt{
+background:#6c7b8c;
+}
+
+.muted{
+color:var(--muted);
+}
+
+.copy-msg{
+font-size:0.8rem;
+color:green;
+margin-top:5px;
+display:none;
+}
+
+@media (max-width:900px){
+.wrap{flex-direction:column}
+.list{width:100%}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Γλωσσάριο — Λεξικό Όρων</h1>
+<div style="margin-left:auto;font-size:0.9rem;">
+Επιλέξτε έναν όρο για επεξήγηση
+</div>
+</header>
+
+<div class="wrap">
+
+<aside class="list">
+
+<h2>Όροι</h2>
+
+<input class="search" placeholder="Αναζήτηση όρου..." id="searchBox">
+
+<div id="termsContainer">
+
+<div class="term" data-key="ac">
+<div class="title">Εναλλασσόμενο Ρεύμα (AC)</div>
+<div class="short">Η μορφή ρεύματος των οικιακών δικτύων</div>
+</div>
+
+<div class="term" data-key="circuit">
+<div class="title">Ηλεκτρικό Κύκλωμα</div>
+<div class="short">Σύνολο συνδεδεμένων ηλεκτρικών στοιχείων</div>
+</div>
+
+<div class="term" data-key="switch">
+<div class="title">Διακόπτης</div>
+<div class="short">Έλεγχος λειτουργίας κυκλώματος</div>
+</div>
+
+<div class="term" data-key="fuse">
+<div class="title">Ασφάλεια</div>
+<div class="short">Προστασία από υπερφόρτωση</div>
+</div>
+
+<div class="term" data-key="ground">
+<div class="title">Γείωση</div>
+<div class="short">Προστασία από ηλεκτροπληξία</div>
+</div>
+
+<div class="term" data-key="rcd">
+<div class="title">Ρελέ Διαρροής (RCD)</div>
+<div class="short">Προστασία από διαρροή ρεύματος</div>
+</div>
+
+<div class="term" data-key="socket">
+<div class="title">Πρίζα</div>
+<div class="short">Σημείο σύνδεσης συσκευών</div>
+</div>
+
+<div class="term" data-key="panel">
+<div class="title">Πίνακας Διανομής</div>
+<div class="short">Κεντρικό σημείο εγκατάστασης</div>
+</div>
+
+<div class="term" data-key="short">
+<div class="title">Βραχυκύκλωμα</div>
+<div class="short">Άμεση επαφή φάσης και ουδετέρου</div>
+</div>
+
+</div>
+</aside>
+
+<section class="content">
+
+<h2 id="defTitle">Επιλέξτε όρο</h2>
+
+<div id="defText" class="muted">
+Κάντε κλικ σε έναν όρο για να εμφανιστεί η επεξήγησή του.
+</div>
+
+<div class="copy-msg" id="copyMsg">Αντιγράφηκε!</div>
+
+<div class="btn-row">
+<button class="btn alt" id="btnClose">Καθαρισμός</button>
+<button class="btn" id="btnExpandAll">Εμφάνιση όλων</button>
+<button class="btn" id="btnCopy">Αντιγραφή</button>
+</div>
+
+</section>
+
+</div>
+
+<script>
+
+const DICT={
+ac:{title:"Εναλλασσόμενο Ρεύμα (AC)",text:"Η μορφή ηλεκτρικού ρεύματος που αλλάζει περιοδικά κατεύθυνση. Χρησιμοποιείται στις οικιακές ηλεκτρικές εγκαταστάσεις."},
+circuit:{title:"Ηλεκτρικό Κύκλωμα",text:"Σύνολο ηλεκτρικών στοιχείων που επιτρέπουν τη ροή ρεύματος μέσα από αγωγούς."},
+switch:{title:"Διακόπτης",text:"Συσκευή που επιτρέπει ή διακόπτει τη ροή ρεύματος σε ένα κύκλωμα."},
+fuse:{title:"Ασφάλεια",text:"Διάταξη προστασίας που διακόπτει το κύκλωμα όταν το ρεύμα υπερβεί επιτρεπτό όριο."},
+ground:{title:"Γείωση",text:"Σύστημα προστασίας που οδηγεί επικίνδυνα ρεύματα προς τη γη."},
+rcd:{title:"Ρελέ Διαρροής",text:"Διακόπτει το ρεύμα όταν εντοπιστεί διαρροή προς τη γείωση."},
+socket:{title:"Πρίζα",text:"Σημείο στο οποίο συνδέονται ηλεκτρικές συσκευές."},
+panel:{title:"Πίνακας Διανομής",text:"Κεντρικός πίνακας που περιέχει ασφάλειες και προστασίες."},
+short:{title:"Βραχυκύκλωμα",text:"Άμεση επαφή αγωγών χαμηλής αντίστασης που προκαλεί μεγάλο ρεύμα."}
+};
+
+const terms=document.querySelectorAll(".term");
+const title=document.getElementById("defTitle");
+const text=document.getElementById("defText");
+
+terms.forEach(t=>{
+t.onclick=()=>{
+terms.forEach(x=>x.classList.remove("active"));
+t.classList.add("active");
+
+const k=t.dataset.key;
+title.textContent=DICT[k].title;
+text.innerHTML="<p class='fade'>"+DICT[k].text+"</p>";
+};
+});
+
+document.getElementById("btnClose").onclick=()=>{
+title.textContent="Επιλέξτε όρο";
+text.innerHTML="Κάντε κλικ σε έναν όρο για να εμφανιστεί η επεξήγησή του.";
+};
+
+document.getElementById("btnExpandAll").onclick=()=>{
+title.textContent="Όλοι οι όροι";
+text.innerHTML=Object.values(DICT)
+.map(d=>`<h3 style="color:var(--accent)">${d.title}</h3><p>${d.text}</p>`)
+.join("");
+};
+
+document.getElementById("btnCopy").onclick=()=>{
+navigator.clipboard.writeText(text.innerText);
+document.getElementById("copyMsg").style.display="block";
+setTimeout(()=>{document.getElementById("copyMsg").style.display="none"},1200);
+};
+
+document.getElementById("searchBox").oninput=function(){
+const q=this.value.toLowerCase();
+document.querySelectorAll(".term").forEach(t=>{
+t.style.display=t.innerText.toLowerCase().includes(q)?"block":"none";
+});
+};
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Σενάριο Βλάβης – Αστοχία Λάμπας</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      margin-top: 40px;
+    }
+
+    .panel {
+      text-align: center;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 200px;
+    }
+
+    .lamp {
+      width: 140px;
+      transition: 0.5s;
+      margin-bottom: 10px;
+    }
+
+    .lamp.weak {
+      filter: brightness(50%);
+      animation: flicker 0.15s infinite;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 0.7; }
+      25% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+      75% { opacity: 0.4; }
+      100% { opacity: 0.7; }
+    }
+
+    .lamp.on {
+      filter: brightness(120%);
+      animation: none;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #1e90ff;
+      color: white;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0d6efd;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .correct { color: green; }
+
+    .info {
+      background: #fff;
+      padding: 20px;
+      margin-top: 30px;
+      border-left: 5px solid #ff9800;
+      border-radius: 5px;
+      text-align: left;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Μετρητής ρεύματος */
+    .ammeter {
+      margin-top: 15px;
+      font-size: 20px;
+      color: #555;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<h1>Σενάριο Βλάβης – Αστοχία Λάμπας</h1>
+<p>Η λάμπα ανάβει αχνά ή τρεμοπαίζει. Το κύκλωμα φαίνεται σωστό.</p>
+
+<div class="container">
+
+  <!-- Παροχή -->
+  <div class="panel">
+    <h3>Παροχή</h3>
+    <p>220V</p>
+    <div class="ammeter" id="ammeter">Ρεύμα: 0.4A</div>
+  </div>
+
+  <!-- Λάμπα -->
+  <div class="panel">
+    <h3>Λάμπα</h3>
+    <img src="../images/lamp_on.png" id="lamp" class="lamp weak">
+    <br>
+    <button onclick="replaceLamp()">Αντικατάσταση Λάμπας</button>
+  </div>
+
+</div>
+
+<div id="message" class="message"></div>
+
+<div class="info">
+  <h3>Επεξήγηση</h3>
+  <p>
+    Σε ορισμένες περιπτώσεις, μια λάμπα φαίνεται λειτουργική,
+    αλλά εμφανίζει αχνό φωτισμό ή τρεμόπαιγμα λόγω φθοράς του νήματος
+    ή εσωτερικής αστοχίας.
+  </p>
+  <p>
+    Το κύκλωμα είναι σωστό, όμως το φορτίο δεν λειτουργεί κανονικά.
+    Η ενδεδειγμένη ενέργεια είναι η αντικατάσταση της λάμπας.
+  </p>
+</div>
+
+<script>
+  const lamp = document.getElementById("lamp");
+  const message = document.getElementById("message");
+  const ammeter = document.getElementById("ammeter");
+
+  let current = 0.4; // Αρχικό αχνό ρεύμα
+
+  // Τυχαίο flicker ρεύματος
+  setInterval(() => {
+    if(lamp.classList.contains("weak")){
+      let fluct = (Math.random()*0.2 - 0.1); // ±0.1
+      let display = (current + fluct).toFixed(2);
+      ammeter.innerText = `Ρεύμα: ${display}A`;
+    }
+  }, 400);
+
+  function replaceLamp() {
+    lamp.classList.remove("weak");
+    lamp.classList.add("on");
+    message.innerHTML = "✔️ Η λάμπα αντικαταστάθηκε. Ο φωτισμός είναι πλέον κανονικός.";
+    message.className = "message correct";
+
+    // Ρεύμα κανονικό
+    ammeter.innerText = "Ρεύμα: 0.8A";
+  }
+</script>
+
+</body>
+</html>

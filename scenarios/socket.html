@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>Σενάριο – Συνδεσμολογία Πρίζας</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #eef2f6;
+  text-align: center;
+}
+
+header {
+  background: #1e3a5f;
+  color: white;
+  padding: 15px;
+}
+
+#area {
+  position: relative;
+  width: 900px;
+  height: 480px;
+  margin: 30px auto;
+  background: white;
+  border: 2px solid #aaa;
+  border-radius: 10px;
+}
+
+/* === ΤΜΗΜΑΤΑ === */
+.section {
+  position: absolute;
+  top: 80px;
+  width: 280px;
+  height: 300px;
+  border: 1px dashed #bbb;
+  border-radius: 8px;
+}
+
+#supply { left: 40px; }
+#socketBox { right: 60px; }
+
+/* === ΑΚΡΟΔΕΚΤΕΣ === */
+.terminal, .wire-end {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  position: absolute;
+  cursor: pointer;
+  border: 2px solid #333;
+  z-index: 5;
+}
+
+.phase { background: red; }
+.neutral { background: blue; }
+.earth { background: green; }
+
+.selected {
+  box-shadow: 0 0 10px 3px gold;
+}
+
+/* === ΠΡΙΖΑ === */
+#socketImg {
+  width: 140px;
+  margin-top: -15px;
+}
+
+/* === ΚΑΛΩΔΙΑ ΠΡΙΖΑΣ === */
+.socket-wires {
+  position: absolute;
+  bottom: 40px;
+  left: 90px;
+  width: 140px;
+  height: 120px;
+}
+
+
+.wire-container {
+  position: absolute;
+}
+
+.wire {
+  position: absolute;
+  width: 6px;
+  height: 70px;
+  top: -70px;
+  left: 6px;
+}
+
+.wire.phase { background: red; }
+.wire.neutral { background: blue; }
+.wire.earth { background: green; }
+
+.label {
+  position: absolute;
+  left: -70px;
+  font-size: 13px;
+}
+
+/* === SVG === */
+#svg {
+  position:absolute;
+  top:0;
+  left:0;
+  pointer-events:none;
+  z-index:1;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>Σενάριο – Συνδεσμολογία Πρίζας</h2>
+<p>Συνδέστε σωστά τα κάλωδια της παροχής με τους ακροδέκτες της πρίζας</p>
+</header>
+
+<div id="area">
+
+<!-- ΠΑΡΟΧΗ -->
+<div class="section" id="supply">
+  <h3>Παροχή</h3>
+
+  <span style="position:absolute; left:20px; top:90px;">Φάση(L)</span>
+  <div class="terminal phase" id="tPhase" style="left:200px; top:90px;"></div>
+
+  <span style="position:absolute; left:20px; top:150px;">Γείωση(⏚)</span>
+  <div class="terminal earth" id="tEarth" style="left:200px; top:150px;"></div>
+
+  <span style="position:absolute; left:20px; top:210px;">Ουδέτερος(N)</span>
+  <div class="terminal neutral" id="tNeutral" style="left:200px; top:210px;"></div>
+
+</div>
+
+<!-- ΠΡΙΖΑ -->
+<div class="section" id="socketBox">
+  <h3>Πρίζα</h3>
+  <img id="socketImg" src="../images/socket_1.png">
+
+<div class="socket-wires">
+  <!-- Φάση -->
+  <div style="position:absolute; left:8px; bottom:45px;">
+    <div class="wire phase" style="height:50px; top:-30px;"></div>
+    <div class="wire-end phase" id="sockL"></div>
+  </div>
+
+  <!-- Γείωση -->
+  <div style="position:absolute; left:42px; bottom:25px;">
+    <div class="wire earth" style="height:55px; top:-50px;"></div>
+    <div class="wire-end earth" id="sockPE"></div>
+  </div>
+
+  <!-- Ουδέτερος -->
+  <div style="position:absolute; left:75px; bottom:0px;">
+    <div class="wire neutral" style="height:75px; top:-70px;"></div>
+    <div class="wire-end neutral" id="sockN"></div>
+  </div>
+
+
+</div>
+</div>
+
+<svg id="svg" width="900" height="480"></svg>
+</div>
+
+<!-- Κουμπιά και μηνύματα έξω από το #area -->
+<div style="text-align:center; margin-top:20px;">
+  <button onclick="check()">Έλεγχος Συνδεσμολογίας</button>
+  <p id="msg"></p>
+  <button id="whyBtn" style="display:none;" onclick="toggleTheory()">🔍 Δες γιατί</button>
+</div>
+
+<div id="theoryBox" style="
+display:none;
+max-width:800px;
+margin:20px auto;
+background:#f9fbfd;
+border:1px solid #bbb;
+border-radius:8px;
+padding:15px;
+text-align:left;
+">
+<h3>Επεξήγηση</h3>
+<p>Το καλώδιο της γείωσης, πάντα συνδέεται στον μεσαίο ακρόδεκτη της πρίζας. Επιπλέον, τα καλώδια της φάσης και του ουδέτερου, συνδέεονται εκεί που υποδηλώνει ο κατασκευαστής είτε πάνω στην πρίζα είτε σε κάποιο εγχείριδιο που τη συνοδεύει. Σε περίπτωση που δεν υπάρχει κάποια ένδειξη ή κάποιο εγχειρίδιο τοποθετούνται σε όποια θέση εμείς επιθυμούμε. <b>Προσοχή</b>, μόνο για τα καλώδια της φάσης και του ουδετέρου.</p>
+</div>
+
+<script>
+let selected = null;
+let connections = [];
+
+document.querySelectorAll('.terminal, .wire-end').forEach(el => {
+  el.onclick = () => {
+    if (!selected) {
+      selected = el;
+      el.classList.add("selected");
+      return;
+    }
+
+    const a = selected;
+    const b = el;
+
+    /* ❌ καλώδιο ↔ καλώδιο */
+    if (a.classList.contains("wire-end") && b.classList.contains("wire-end")) {
+      msg.innerText = "⚠️ Δεν συνδέονται δύο καλώδια μεταξύ τους.";
+      reset();
+      return;
+    }
+
+    /* ❌ λάθος χρώματα */
+    if ((a.className.includes("phase") && b.className.includes("neutral")) ||
+        (a.className.includes("neutral") && b.className.includes("phase"))) {
+      msg.innerText = "⚠️ Βραχυκύκλωμα φάσης – ουδετέρου.";
+      reset();
+      return;
+    }
+
+    if (a.className.includes("earth") && !b.className.includes("earth")) {
+      msg.innerText = "⚠️ Η γείωση δεν συνδέεται με L ή N.";
+      reset();
+      return;
+    }
+
+    drawLine(a, b);
+    connections.push([a.id, b.id]);
+    reset();
+    msg.innerText = "";
+  };
+});
+
+function reset() {
+  selected.classList.remove("selected");
+  selected = null;
+}
+
+function drawLine(a, b) {
+  const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+  const r1 = a.getBoundingClientRect();
+  const r2 = b.getBoundingClientRect();
+  const area = document.getElementById("area").getBoundingClientRect();
+
+  line.setAttribute("x1", r1.left - area.left + 9);
+  line.setAttribute("y1", r1.top - area.top + 9);
+  line.setAttribute("x2", r2.left - area.left + 9);
+  line.setAttribute("y2", r2.top - area.top + 9);
+  line.setAttribute("stroke", "black");
+  line.setAttribute("stroke-width", "4");
+
+  document.getElementById("svg").appendChild(line);
+}
+
+function isConnected(a, b) {
+  return connections.some(c =>
+    (c[0] === a && c[1] === b) || (c[0] === b && c[1] === a)
+  );
+}
+
+function check() {
+  const ok =
+    isConnected("tPhase","sockL") &&
+    isConnected("tNeutral","sockN") &&
+    isConnected("tEarth","sockPE");
+
+  msg.innerText = ok
+    ? "✅ Σωστή συνδεσμολογία πρίζας."
+    : "❌ Λάθος ή ελλιπής συνδεσμολογία.";
+
+  document.getElementById("whyBtn").style.display = "inline-block";
+}
+
+function toggleTheory() {
+  theoryBox.style.display =
+    theoryBox.style.display === "none" ? "block" : "none";
+}
+</script>
+
+</body>
+</html>

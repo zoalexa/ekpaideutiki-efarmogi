@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>Σενάριο Βλάβης – Πρόβλημα Καλωδίωσης</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #eef2f6;
+  text-align: center;
+}
+
+header {
+  background: #1e3a5f;
+  color: white;
+  padding: 15px;
+}
+
+#area {
+  position: relative;
+  width: 900px;
+  height: 480px;
+  margin: 30px auto;
+  background: white;
+  border: 2px solid #aaa;
+  border-radius: 10px;
+}
+
+.section {
+  position: absolute;
+  top: 60px;
+  width: 280px;
+  height: 350px;
+  border: 1px dashed #bbb;
+  border-radius: 8px;
+}
+
+#supply { left: 30px; }
+
+.section h3 {
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.terminal, .wire-end {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  position: absolute;
+  cursor: pointer;
+  border: 2px solid #333;
+  z-index: 5;
+}
+
+.phase { background: red; }
+.neutral { background: blue; }
+.switch-terminal { background: black; }
+
+.selected {
+  box-shadow: 0 0 10px 3px gold;
+}
+
+#lampBox {
+  position: absolute;
+  top: 20px;
+  right: 80px;
+  z-index: 10;
+}
+
+#lampBox img { width: 70px; }
+
+#lampWires {
+  position: absolute;
+  top: 140px;
+  right: 105px;
+}
+
+.label {
+  position: absolute;
+  left: -90px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.wire {
+  position: absolute;
+  width: 6px;
+  height: 90px;
+  top: -90px;
+  left: 6px;
+}
+
+.wire.phase { background: red; }
+.wire.neutral { background: blue; }
+
+#svg {
+  position:absolute;
+  top:0;
+  left:0;
+  pointer-events:none;
+  z-index:1;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+}
+
+.single-image-explain {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.single-image-explain .titles {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.single-image-explain img {
+  max-width: 100%;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>Σενάριο Βλάβης – Πρόβλημα Καλωδίωσης</h2>
+<p>Συνδέστε σωστά τα καλώδια της παροχής με τις επαφές του διακόπτη και της λάμπα</p>
+</header>
+
+<div id="area">
+
+<div class="section" id="supply">
+  <h3>Παροχή</h3>
+
+  <span style="position:absolute; left:30px; top:110px;">Ρεύμα/Φάση (L)</span>
+  <div class="terminal phase" id="tPhase" style="left:200px; top:110px;"></div>
+
+  <span style="position:absolute; left:30px; top:190px;">Ουδέτερος(N)</span>
+  <div class="terminal neutral" id="tNeutral" style="left:200px; top:190px;"></div>
+</div>
+
+<div class="section" id="switchBox" style="left:350px;">
+  <h3>Διακόπτης (ON)</h3>
+
+  <span style="position:absolute; left:122px; top:40px;">L1</span>
+  <div class="terminal switch-terminal" id="sL1" style="left:120px; top:60px;"></div>
+
+  <span style="position:absolute; left:122px; top:100px;">L2</span>
+  <div class="terminal switch-terminal" id="sL2" style="left:120px; top:120px;"></div>
+</div>
+
+<div id="lampBox">
+  <img id="lampImg" src="../images/lamp_off.png">
+</div>
+
+<div id="lampWires">
+  <div style="position:relative; margin-bottom:80px; margin-left:-40px; margin-top:15px;">
+    <div class="label">Ε(1)</div>
+    <div class="wire phase"></div>
+    <div class="wire-end phase" id="lamp1"></div>
+  </div>
+
+  <div style="position:relative; margin-top:-20px;">
+    <div class="label">Ε(2)</div>
+    <div class="wire neutral"></div>
+    <div class="wire-end neutral" id="lamp2"></div>
+  </div>
+</div>
+
+<svg id="svg" width="900" height="480"></svg>
+</div>
+
+<button onclick="check()">Έλεγχος Συνδεσμολογίας</button>
+<p id="msg"></p>
+<button id="whyBtn" style="display:none;" onclick="toggleTheory()">
+🔍 Δες γιατί
+</button>
+
+<div id="theoryBox" style="
+  display:none;
+  max-width:800px;
+  margin:20px auto;
+  background:#f9fbfd;
+  border:1px solid #bbb;
+  border-radius:8px;
+  padding:15px;
+  text-align:left;
+">
+  <h3>Γιατί αυτή είναι η σωστή (ή λάθος) συνδεσμολογία:</h3>
+
+  <p><b>Η φάση (Ρεύμα) περνά από τον διακόπτη:</b><br>
+  Ο διακόπτης τοποθετείται πάντα στη φάση έτσι ώστε όταν είναι στην θέση<b> OFF (Ανοιχτός)</b>
+  η λάμπα να μην βρίσκεται υπό τάση.</p>
+
+  <p><b>Ο ουδέτερος δεν περνά από τον διακόπτη:</b><br>
+  Ο ουδέτερος λειτουργεί ως επιστροφή του ρεύματος
+  και δεν διακόπτεται.</p>
+
+  <p><b>Ρόλος διακόπτη (L1 – L2):</b><br>
+  Ο διακόπτης επιτρέπει ή διακόπτει τη φάση(ρεύμα).
+  <b>Σε καμία περίπτωση</b> δεν επιτρέπεται η γεφύρωση των ακροδεκτών-επαφών μεταξύ τους.</p>
+
+  <p><b>Πότε ανάβει η λάμπα:</b><br>
+  Μόνο όταν υπάρχει κλειστό κύκλωμα
+  και ρέει ρεύμα.</p>
+
+  <p><b>Παράδειγμα κυκλωμάτων:</b><br></p>
+
+<div class="single-image-explain">
+
+  <div class="titles">
+    <span>α) Κλειστό κύκλωμα (Ροή Ρεύματος)</span>
+    <span>β) Ανοικτό κύκλωμα (Διακοπή Ρεύματος)</span>
+  </div>
+
+  <img src="../images/circuit_.png" alt="Επεξήγηση κυκλώματος">
+
+</div>
+
+</div>
+</div>
+
+<script>
+let selected = null;
+let connections = [];
+
+document.querySelectorAll('.terminal, .wire-end').forEach(el => {
+  el.onclick = () => {
+
+    if (!selected) {
+      selected = el;
+      el.classList.add("selected");
+      return;
+    }
+
+    const a = selected.id;
+    const b = el.id;
+
+    /* ❌ καλώδιο ↔ καλώδιο */
+    if (selected.classList.contains("wire-end") &&
+        el.classList.contains("wire-end")) {
+      msg.innerText = "⚠️ Δεν επιτρέπεται σύνδεση μεταξύ καλωδίων.";
+      reset();
+      return;
+    }
+
+    /* ❌ φάση ↔ ουδέτερος */
+    if (
+      (selected.classList.contains("phase") && el.classList.contains("neutral")) ||
+      (selected.classList.contains("neutral") && el.classList.contains("phase"))
+    ) {
+      msg.innerText = "⚠️ Βραχυκύκλωμα φάσης – ουδετέρου.";
+      reset();
+      return;
+    }
+
+    /* ❌ ουδέτερος παροχής → διακόπτης */
+    if (
+      (a === "tNeutral" && b.startsWith("s")) ||
+      (b === "tNeutral" && a.startsWith("s"))
+    ) {
+      msg.innerText = "⚠️ Ο ουδέτερος δεν περνάει από διακόπτη.";
+      reset();
+      return;
+    }
+
+    /* ❌ φάση παροχής → λάμπα απευθείας */
+    if (
+      (a === "tPhase" && b.startsWith("lamp")) ||
+      (b === "tPhase" && a.startsWith("lamp"))
+    ) {
+      msg.innerText = "⚠️ Η φάση περνά πρώτα από τον διακόπτη.";
+      reset();
+      return;
+    }
+
+    /* ❌ γεφύρωση διακόπτη */
+    if (
+      (a === "sL1" && b === "sL2") ||
+      (a === "sL2" && b === "sL1")
+    ) {
+      msg.innerText = "⚠️ Δεν επιτρέπεται γεφύρωση L1–L2.";
+      reset();
+      return;
+    }
+
+    drawLine(selected, el);
+    connections.push([a, b]);
+    reset();
+    msg.innerText = "";
+  };
+});
+
+function reset() {
+  selected.classList.remove("selected");
+  selected = null;
+}
+
+function drawLine(a, b) {
+  const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+  const r1 = a.getBoundingClientRect();
+  const r2 = b.getBoundingClientRect();
+  const area = document.getElementById("area").getBoundingClientRect();
+
+  line.setAttribute("x1", r1.left - area.left + 9);
+  line.setAttribute("y1", r1.top - area.top + 9);
+  line.setAttribute("x2", r2.left - area.left + 9);
+  line.setAttribute("y2", r2.top - area.top + 9);
+  line.setAttribute("stroke", "black");
+  line.setAttribute("stroke-width", "4");
+
+  document.getElementById("svg").appendChild(line);
+}
+
+function isConnected(a, b) {
+  return connections.some(c =>
+    (c[0] === a && c[1] === b) || (c[0] === b && c[1] === a)
+  );
+}
+
+function check() {
+  const lampToSwitch =
+    isConnected("lamp1", "sL1") || isConnected("lamp1", "sL2") ||
+    isConnected("lamp2", "sL1") || isConnected("lamp2", "sL2");
+
+  const lampToNeutral =
+    isConnected("lamp1", "tNeutral") || isConnected("lamp2", "tNeutral");
+
+  const phaseToSwitch =
+    isConnected("tPhase", "sL1") || isConnected("tPhase", "sL2");
+
+  if (lampToSwitch && lampToNeutral && phaseToSwitch) {
+    lampImg.src = "../images/lamp_on.png";
+    msg.innerText = "✅ Σωστή συνδεσμολογία – η λάμπα λειτουργεί.";
+  } else {
+    lampImg.src = "../images/lamp_off.png";
+    msg.innerText = "❌ Λάθος ή ελλιπής συνδεσμολογία.";
+  }
+document.getElementById("whyBtn").style.display = "inline-block";
+}
+function toggleTheory() {
+  const box = document.getElementById("theoryBox");
+  box.style.display = box.style.display === "none" ? "block" : "none";
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Βίντεο Διδασκαλίας</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #eef2f7, #f9fbfd);
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #555;
+    }
+
+    /* ===== VIEW TOGGLE BUTTON ===== */
+    .view-toggle {
+      max-width: 1100px;
+      margin: 0 auto 20px auto;
+      text-align: right;
+    }
+
+    .view-toggle button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #333;
+      color: white;
+      font-size: 14px;
+    }
+
+    .view-toggle button:hover {
+      background: #000;
+    }
+
+    /* ===== GRID ===== */
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    /* ===== LIST VIEW ===== */
+    .videos-grid.list-view {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .videos-grid.list-view .video-card {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .videos-grid.list-view .video-card img {
+      width: 180px;
+      height: 120px;
+    }
+
+    .videos-grid.list-view .video-content {
+      flex: 1;
+    }
+
+    /* ===== CARDS ===== */
+    .video-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .video-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .video-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      background-color: #000;
+    }
+
+    .video-content {
+      padding: 20px;
+      flex-grow: 1;
+    }
+
+    .video-content h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .video-content p {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .video-footer {
+      padding: 15px 20px;
+      border-top: 1px solid #eee;
+      text-align: right;
+    }
+
+    .video-footer a {
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      background-color: #d32f2f;
+      color: white;
+      font-size: 14px;
+    }
+
+    .video-footer a:hover {
+      background-color: #b71c1c;
+    }
+
+    /* Χρωματικές μπάρες */
+    .bar-blue { border-top: 5px solid #1976d2; }
+    .bar-green { border-top: 5px solid #388e3c; }
+    .bar-purple { border-top: 5px solid #7b1fa2; }
+    .bar-red { border-top: 5px solid #f51600; }
+    .bar-orange { border-top: 5px solid #f57c00; }
+    .bar-black { border-top: 5px solid #030100; }
+    .bar-brown { border-top: 5px solid #4b2600; }
+    .bar-magenta { border-top: 5px solid #f500b6; }
+  </style>
+</head>
+
+<body>
+
+<h1>Βίντεο Διδασκαλίας</h1>
+<div class="subtitle">
+  Επιλεγμένα εκπαιδευτικά βίντεο για κατανόηση ηλεκτρολογικών κυκλωμάτων
+</div>
+
+<!-- VIEW BUTTON - HOME BUTTON -->
+<div class="view-toggle">
+  <a href="../index.html">
+    <button style="margin-right: 10px; background:#1976d2;">🏠 Home</button>
+  </a>
+  <button id="viewBtn">Grid View</button>
+</div>
+<!-- DEFAULT LIST VIEW -->
+<div class="videos-grid list-view" id="videosContainer">
+
+  <!-- ΒΙΝΤΕΟ 1 -->
+  <div class="video-card bar-blue">
+    <img src="../images/video-basic-circuit.jpg" alt="Βασικό ηλεκτρικό κύκλωμα">
+    <div class="video-content">
+      <h3>Βασικό Ηλεκτρικό Κύκλωμα</h3>
+      <p>
+        Εισαγωγή στις βασικές έννοιες:
+        πηγή, αγωγοί, φορτίο και λειτουργία κυκλώματος.
+      </p>
+    </div>
+    <div class="video-footer">
+      <a href="https://www.youtube.com/watch?v=XXXXXXXX" target="_blank">Παρακολούθηση</a>
+    </div>
+  </div>
+
+  <!-- ΒΙΝΤΕΟ 2 -->
+  <div class="video-card bar-green">
+    <img src="../images/video-switch.jpg" alt="Διακόπτης φωτισμού">
+    <div class="video-content">
+      <h3>Απλός Διακόπτης Φωτισμού</h3>
+      <p>
+        Ανάλυση της συνδεσμολογίας
+        και της λειτουργίας ενός απλού διακόπτη.
+      </p>
+    </div>
+    <div class="video-footer">
+      <a href="https://www.youtube.com/watch?v=XXXXXXXX" target="_blank">Παρακολούθηση</a>
+    </div>
+  </div>
+
+  <!-- ΒΙΝΤΕΟ 3 -->
+  <div class="video-card bar-orange">
+    <img src="../images/video-comit.jpg" alt="Αλερετούρ">
+    <div class="video-content">
+      <h3>Διακόπτης-Κομιτατέρ(Συνδεσμολογία)</h3>
+      <p>
+        Ανάλυση της συνδεσμολογίας
+        και της λειτουργίας ενός κομιτατέρ διακόπτη.
+      </p>
+    </div>
+    <div class="video-footer">
+      <a href="https://www.youtube.com/watch?v=XXXXXXXX" target="_blank">Παρακολούθηση</a>
+    </div>
+  </div>
+
+
+  <!-- ΒΙΝΤΕΟ 4 -->
+  <div class="video-card bar-purple">
+    <img src="../images/video-aleretour.jpg" alt="Αλερετούρ">
+    <div class="video-content">
+      <h3>Κύκλωμα Αλερετούρ (Μέρος 1ο)</h3>
+      <p>
+        Παρουσίαση κυκλώματος
+        ελέγχου φωτισμού από δύο σημεία.
+      </p>
+    </div>
+    <div class="video-footer">
+      <a href="https://www.youtube.com/watch?v=XXXXXXXX" target="_blank">Παρακολούθηση</a>
+    </div>
+  </div>
+
+
+  <!-- ΒΙΝΤΕΟ 5 -->
+  <div class="video-card bar-purple">
+    <img src="../images/video-aleretour.jpg" alt="Αλερετούρ">
+    <div class="video-content">
+      <h3>Κύκλωμα Αλερετούρ (Μέρος 2ο)</h3>
+      <p>
+        Παρουσίαση κυκλώματος
+        ελέγχου φωτισμού από τρία σημεία ή και παραπάνω.
+      </p>
+    </div>
+    <div class="video-footer">
+      <a href="https://www.youtube.com/watch?v=XXXXXXXX" target="_blank">Παρακολούθηση</a>
+    </div>
+  </div>
+
+
+  <!-- ΒΙΝΤΕΟ 6 -->
+  <div class="video-card bar-red">
+    <img src="../images/video-socket.jpg" alt="Αλερετούρ">
+    <div class="video-content">
+      <h3>Κύκλωμα Πρίζας</h3>
+      <p>
+        Παρουσίαση κυκλώματος πρίζας
+        και ανάλυσης της συνδεσμολογίας.
+      </p>
+    </div>
+    <div class="video-footer">
+      <a href="https://www.youtube.com/watch?v=XXXXXXXX" target="_blank">Παρακολούθηση</a>
+    </div>
+  </div>
+
+  <!-- ΒΙΝΤΕΟ 7 -->
+  <div class="video-card bar-black">
+    <img src="../images/video-socket+light.jpg" alt="Πρίζα+Διακόπτης">
+    <div class="video-content">
+      <h3>Κύκλωμα Πρίζας + Απλός Διακόπτης</h3>
+      <p>
+        Παρουσίαση κυκλώματος πρίζας + Απλός Διακόπτης
+        και ανάλυσης της συνδεσμολογίας.
+      </p>
+    </div>
+    <div class="video-footer">
+      <a href="https://www.youtube.com/watch?v=XXXXXXXX" target="_blank">Παρακολούθηση</a>
+    </div>
+  </div>
+
+  <!-- ΒΙΝΤΕΟ 8 -->
+  <div class="video-card bar-brown">
+    <img src="../images/video-fuse.jpg" alt="Ασφάλειες ηλεκτρικού πίνακα">
+    <div class="video-content">
+      <h3>Ασφάλειες & Προστασία Κυκλωμάτων</h3>
+      <p>
+      Εισαγωγή στις ασφάλειες, τη λειτουργία τους
+      και τον ρόλο τους στην προστασία οικιακών κυκλωμάτων.
+      </p>
+    </div>
+    <div class="video-footer">
+      <a href="https://www.youtube.com/watch?v=XXXXXXXX" target="_blank">Παρακολούθηση</a>
+    </div>
+  </div>
+
+  <!-- ΒΙΝΤΕΟ 9 -->
+  <div class="video-card bar-magenta">
+    <img src="../images/video-panel.jpg" alt="Ηλεκτρικός πίνακας κατοικίας">
+    <div class="video-content">
+      <h3>Ηλεκτρικός Πίνακας Κατοικίας</h3>
+      <p>
+      Βασική παρουσίαση του ηλεκτρικού πίνακα,
+      των στοιχείων του και της λειτουργίας τους.
+      </p>
+    </div>
+    <div class="video-footer">
+      <a href="https://www.youtube.com/watch?v=XXXXXXXX" target="_blank">Παρακολούθηση</a>
+    </div>
+  </div>
+
+
+</div>
+
+<script>
+  const viewBtn = document.getElementById("viewBtn");
+  const container = document.getElementById("videosContainer");
+
+  viewBtn.addEventListener("click", function () {
+    container.classList.toggle("list-view");
+
+    if (container.classList.contains("list-view")) {
+      viewBtn.textContent = "Grid View";
+    } else {
+      viewBtn.textContent = "List View";
+    }
+  });
+</script>
+
+</body>
+</html>

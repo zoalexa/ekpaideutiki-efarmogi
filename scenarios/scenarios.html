@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Σενάρια Προσομοίωσης</title>
+
+  <!-- Κοινό CSS -->
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #eef2f7, #f9fbfd);
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #555;
+    }
+
+    /* ===== VIEW TOGGLE BUTTON ===== */
+    .view-toggle {
+      max-width: 1100px;
+      margin: 0 auto 20px auto;
+      text-align: right;
+    }
+
+    .view-toggle button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #333;
+      color: white;
+      font-size: 14px;
+    }
+
+    .view-toggle button:hover {
+      background: #000;
+    }
+
+    /* ===== GRID ===== */
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    /* ===== LIST VIEW ===== */
+    .scenarios-grid.list-view {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .scenarios-grid.list-view .scenario-card {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .scenarios-grid.list-view .scenario-card img {
+      width: 180px;
+      height: 120px;
+    }
+
+    .scenarios-grid.list-view .scenario-content {
+      flex: 1;
+    }
+
+    /* ===== CARDS ===== */
+    .scenario-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scenario-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .scenario-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: contain;
+      background-color: #f2f4f8;
+      padding: 15px;
+    }
+
+    .scenario-content {
+      padding: 20px;
+      flex-grow: 1;
+    }
+
+    .scenario-content h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .scenario-content p {
+      color: #444;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .scenario-footer {
+      padding: 15px 20px;
+      border-top: 1px solid #eee;
+      text-align: right;
+    }
+
+    .scenario-footer button {
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #1976d2;
+      color: white;
+    }
+
+    .scenario-footer button:hover {
+      background-color: #125aa0;
+    }
+
+    /* Χρωματικές μπάρες */
+    .bar-red { border-top: 5px solid #d32f2f; }
+    .bar-orange { border-top: 5px solid #f57c00; }
+    .bar-yellow { border-top: 5px solid #fbc02d; }
+    .bar-green { border-top: 5px solid #00f52a; }
+    .bar-blue { border-top: 5px solid #1976d2; }
+    .bar-purple { border-top: 5px solid #7b1fa2; }
+    .bar-black { border-top: 5px solid #030100; }
+    .bar-brown { border-top: 5px solid #4b2600; }
+    .bar-magenta { border-top: 5px solid #f500b6; }
+
+  </style>
+</head>
+
+<body>
+
+<h1>Σενάρια Προσομοίωσης</h1>
+<div class="subtitle">
+  Επιλέξτε ένα σενάριο και μεταφέρετε IRL σενάρια στην οθόνη σας!
+</div>
+
+<!-- VIEW BUTTON -->
+<div class="view-toggle">
+  <button id="viewBtn">Grid View</button>
+</div>
+
+<!-- DEFAULT LIST VIEW -->
+<div class="scenarios-grid list-view" id="scenariosContainer">
+
+  <!-- ΣΕΝΑΡΙΟ 1 -->
+  <div class="scenario-card bar-red">
+    <img src="../images/burned-lamp.png" alt="Καμένη λάμπα">
+    <div class="scenario-content">
+      <h3>Καμένη Λάμπα</h3>
+      <p>
+        Η λάμπα δεν ανάβει καθόλου.
+        Ο χρήστης καλείται να ελέγξει το φωτιστικό
+        και να αντικαταστήσει την λάμπα.
+      </p>
+    </div>
+    <div class="scenario-footer">
+      <button onclick="openScenario('burned-lamp.html')">
+        Εκκίνηση Σεναρίου
+      </button>
+    </div>
+  </div>
+
+  <!-- ΣΕΝΑΡΙΟ 2 -->
+  <div class="scenario-card bar-orange">
+    <img src="../images/wiring-fault.png" alt="Πρόβλημα καλωδίωσης">
+    <div class="scenario-content">
+      <h3>Πρόβλημα Καλωδίωσης</h3>
+      <p>
+        Η λάμπα φαίνεται να είναι λειτουργική, αλλά δεν ανάβει.
+        Ο χρήστης πρέπει να προβεί στην σωστή σύνδεση του 
+        ηλεκτρολογικού κυκλώματος.
+      </p>
+    </div>
+    <div class="scenario-footer">
+      <button onclick="openScenario('wiring-fault.html')">
+        Εκκίνηση Σεναρίου
+      </button>
+    </div>
+  </div>
+
+  <!-- ΣΕΝΑΡΙΟ 3 -->
+  <div class="scenario-card bar-yellow">
+    <img src="../images/weak-lamp.png" alt="Αχνή λάμπα">
+    <div class="scenario-content">
+      <h3>Αστοχία Λάμπας</h3>
+      <p>
+        Η λάμπα ανάβει αχνά ή τρεμοπαίζει.
+        Η συνδεσμολογία φαίνεται σωστή.
+        Ο χρήστης καλείται να ελέγξει το φωτιστικό σώμα.
+      </p>
+    </div>
+    <div class="scenario-footer">
+      <button onclick="openScenario('weak-lamp.html')">
+        Εκκίνηση Σεναρίου
+      </button>
+    </div>
+  </div>
+
+<!-- ΣΕΝΑΡΙΟ 4 -->
+<div class="scenario-card bar-brown">
+  <img src="../images/light-switch.png" alt="Διακόπτης φωτισμού">
+  <div class="scenario-content">
+    <h3>Ελαττωματικός Διακόπτης</h3>
+    <p>
+      Ο διακόπτης δεν ενεργοποιεί πάντα το φως.
+      Ο χρήστης πρέπει να ελέγξει τις επαφές και τη συνδεσμολογία.
+    </p>
+  </div>
+  <div class="scenario-footer">
+    <button onclick="openScenario('switch-fault.html')">
+      Εκκίνηση Σεναρίου
+    </button>
+  </div>
+</div>
+
+  <!-- ΣΕΝΑΡΙΟ 5 -->
+  <div class="scenario-card bar-green">
+    <img src="../images/socket.png" alt="Αχνή λάμπα">
+    <div class="scenario-content">
+      <h3>Συνδεσμολογία Πρίζας</h3>
+      <p>
+        Η πρίζα παρουσιάζει διακοπτόμενη τροφοδοσία 
+        λόγω κακής επαφής ή εσφαλμένης συνδεσμολογίας. 
+      </p>
+    </div>
+    <div class="scenario-footer">
+      <button onclick="openScenario('socket.html')">
+        Εκκίνηση Σεναρίου
+      </button>
+    </div>
+  </div>
+
+<!-- ΣΕΝΑΡΙΟ 6 -->
+<div class="scenario-card bar-blue">
+  <img src="../images/circuit-breaker.png" alt="Πτώση ασφάλειας">
+  <div class="scenario-content">
+    <h3>Πτώση Αυτόματης Ασφάλειας</h3>
+    <p>
+      Η ασφάλεια του ηλεκτρικού πίνακα πέφτει μόλις ενεργοποιηθεί μια συσκευή.
+      Ο χρήστης καλείται να εντοπίσει υπερφόρτωση ή βραχυκύκλωμα.
+    </p>
+  </div>
+  <div class="scenario-footer">
+    <button onclick="openScenario('breaker-trip.html')">
+      Εκκίνηση Σεναρίου
+    </button>
+  </div>
+</div>
+
+<!-- ΣΕΝΑΡΙΟ 7 -->
+<div class="scenario-card bar-black">
+  <img src="../images/short-circuit.png" alt="Βραχυκύκλωμα">
+  <div class="scenario-content">
+    <h3>Βραχυκύκλωμα Κυκλώματος</h3>
+    <p>
+      Κατά την ενεργοποίηση του φωτισμού, η ασφάλεια πέφτει άμεσα.
+      Ο χρήστης πρέπει να εντοπίσει επαφή φάσης με ουδέτερο.
+    </p>
+  </div>
+  <div class="scenario-footer">
+    <button onclick="openScenario('short-circuit.html')">
+      Εκκίνηση Σεναρίου
+    </button>
+  </div>
+</div>
+
+<!-- ΣΕΝΑΡΙΟ 8 -->
+<div class="scenario-card bar-purple">
+  <img src="../images/ground.png" alt="Απουσία γείωσης">
+  <div class="scenario-content">
+    <h3>Απουσία Γείωσης</h3>
+    <p>
+      Η συσκευή λειτουργεί, αλλά παρουσιάζει επικίνδυνη τάση στο περίβλημα.
+      Ο χρήστης καλείται να εντοπίσει την έλλειψη γείωσης.
+    </p>
+  </div>
+  <div class="scenario-footer">
+    <button onclick="openScenario('ground-fault.html')">
+      Εκκίνηση Σεναρίου
+    </button>
+  </div>
+</div>
+
+<!-- ΣΕΝΑΡΙΟ 9 -->
+<div class="scenario-card bar-magenta">
+  <img src="../images/overheated-socket.png" alt="Υπερθέρμανση πρίζας">
+  <div class="scenario-content">
+    <h3>Υπερθέρμανση Πρίζας</h3>
+    <p>
+      Η πρίζα θερμαίνεται έντονα κατά τη λειτουργία ηλεκτρικών συσκευών.
+      Ο χρήστης καλείται να εντοπίσει κακή επαφή ή υπερφόρτωση.
+    </p>
+  </div>
+  <div class="scenario-footer">
+    <button onclick="openScenario('overheated-socket.html')">
+      Εκκίνηση Σεναρίου
+    </button>
+  </div>
+</div>
+
+</div>
+
+
+
+<script>
+  function openScenario(file) {
+    window.open(file, "_blank");
+  }
+
+  const viewBtn = document.getElementById("viewBtn");
+  const container = document.getElementById("scenariosContainer");
+
+  viewBtn.addEventListener("click", function () {
+    container.classList.toggle("list-view");
+
+    if (container.classList.contains("list-view")) {
+      viewBtn.textContent = "Grid View";
+    } else {
+      viewBtn.textContent = "List View";
+    }
+  });
+</script>
+
+</body>
+</html>

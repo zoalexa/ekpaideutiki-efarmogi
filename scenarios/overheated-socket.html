@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>Σενάριο – Υπερθέρμανση Πρίζας</title>
+<style>
+body{
+  font-family:Arial,sans-serif;
+  background:#eef2f6;
+  text-align:center;
+  margin:0;
+}
+header{
+  background:#8b1e1e;
+  color:white;
+  padding:15px;
+}
+#area{
+  position:relative;
+  width:900px;
+  height:480px;
+  margin:30px auto;
+  background:white;
+  border:2px solid #aaa;
+  border-radius:10px;
+  overflow:hidden;
+}
+.section{
+  position:absolute;
+  top:80px;
+  width:280px;
+  height:300px;
+  border:1px dashed #bbb;
+  border-radius:8px;
+}
+#supply{ left:40px; }
+#socketBox{ right:60px; }
+
+.terminal,.wire-end{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  position:absolute;
+  cursor:pointer;
+  border:2px solid #333;
+  z-index:5;
+}
+.phase{ background:red; }
+.neutral{ background:blue; }
+.earth{ background:green; }
+
+.selected{
+  box-shadow:0 0 10px 3px gold;
+}
+
+#socketImg{
+  width:140px;
+  margin-top:-15px;
+  transition:0.4s;
+}
+.overheat{
+  filter:drop-shadow(0 0 15px red);
+  animation:pulse 1s infinite;
+}
+@keyframes pulse{
+  0%{filter:drop-shadow(0 0 5px red);}
+  50%{filter:drop-shadow(0 0 20px red);}
+  100%{filter:drop-shadow(0 0 5px red);}
+}
+.socket-wires{
+  position:absolute;
+  bottom:40px;
+  left:90px;
+  width:140px;
+  height:120px;
+}
+.loose{
+  animation:looseBlink 1s infinite;
+}
+.fixed-green {
+  box-shadow: 0 0 20px 5px green;
+  filter: drop-shadow(0 0 10px green);
+  animation: none !important;
+}
+@keyframes looseBlink{
+  0%{box-shadow:0 0 5px red;}
+  50%{box-shadow:0 0 15px red;}
+  100%{box-shadow:0 0 5px red;}
+}
+.wire{
+  position:absolute;
+  width:6px;
+  height:70px;
+  top:-70px;
+  left:6px;
+}
+.wire.phase{ background:red; }
+.wire.neutral{ background:blue; }
+.wire.earth{ background:green; }
+
+#svg{
+  position:absolute;
+  top:0;
+  left:0;
+  pointer-events:none;
+  z-index:1;
+}
+button{
+  margin-top:10px;
+  padding:10px 18px;
+}
+#msg{
+  font-weight:bold;
+  margin-top:15px;
+}
+#tempBox, #currentBox{
+  margin-top:6px;
+  font-weight:bold;
+}
+.spark{
+  position:absolute;
+  width:8px;
+  height:8px;
+  background:yellow;
+  border-radius:50%;
+  pointer-events:none;
+  animation:sparkAnim 0.3s linear;
+}
+@keyframes sparkAnim{
+  0%{transform:scale(1);opacity:1}
+  100%{transform:scale(3);opacity:0}
+}
+.smoke{
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:gray;
+  border-radius:50%;
+  opacity:0.5;
+  pointer-events:none;
+  animation:smokeAnim 1s linear;
+}
+@keyframes smokeAnim{
+  0%{transform:translateY(0) scale(1);opacity:0.5}
+  100%{transform:translateY(-80px) scale(2);opacity:0}
+}
+#theoryBox{
+  display:none;
+  max-width:800px;
+  margin:20px auto;
+  background:#f9fbfd;
+  border:1px solid #bbb;
+  border-radius:8px;
+  padding:15px;
+  text-align:left;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h2>Σενάριο – Υπερθέρμανση Πρίζας</h2>
+<p>Εντοπίστε την αιτία υπερθέρμανσης και αποκαταστήστε το κύκλωμα.</p>
+</header>
+
+<div id="area">
+
+<!-- ΠΑΡΟΧΗ -->
+<div class="section" id="supply">
+<h3>Παροχή</h3>
+<span style="position:absolute;left:20px;top:90px;">Φάση(L)</span>
+<div class="terminal phase" id="tPhase" style="left:200px;top:90px;"></div>
+<span style="position:absolute;left:20px;top:150px;">Γείωση</span>
+<div class="terminal earth" id="tEarth" style="left:200px;top:150px;"></div>
+<span style="position:absolute;left:20px;top:210px;">Ουδέτερος(N)</span>
+<div class="terminal neutral" id="tNeutral" style="left:200px;top:210px;"></div>
+</div>
+
+<!-- ΠΡΙΖΑ -->
+<div class="section" id="socketBox">
+<h3>Πρίζα</h3>
+<img id="socketImg" src="../images/socket_1.png">
+<div class="socket-wires">
+  <div style="position:absolute;left:8px;bottom:45px;">
+    <div class="wire phase" style="height:50px;top:-30px;"></div>
+    <div class="wire-end phase" id="sockL"></div>
+  </div>
+  <div style="position:absolute;left:42px;bottom:25px;">
+    <div class="wire earth" style="height:55px;top:-50px;"></div>
+    <div class="wire-end earth" id="sockPE"></div>
+  </div>
+  <div style="position:absolute;left:75px;bottom:0px;">
+    <div class="wire neutral" style="height:75px;top:-70px;"></div>
+    <div class="wire-end neutral" id="sockN"></div>
+  </div>
+</div>
+</div>
+
+<svg id="svg" width="900" height="480"></svg>
+</div>
+
+<div>
+<button onclick="reduceLoad()">Μείωση Φορτίου</button>
+<button id="replaceBtn" onclick="replaceSocket()" style="display:none;">Αντικατάσταση Πρίζας</button>
+<button id="breakerBtn" onclick="raiseBreaker()" disabled>Ανέβασμα Ασφάλειας</button>
+<p id="msg"></p>
+<div id="tempBox">Θερμοκρασία: <span id="tempVal">25</span> °C</div>
+<div id="currentBox">Ρεύμα: <span id="currentVal">8</span> A</div>
+<button onclick="toggleTheory()">🔍 Δες γιατί</button>
+
+<div id="theoryBox" style="
+display:none;
+max-width:800px;
+margin:20px auto;
+background:#f9fbfd;
+border:1px solid #bbb;
+border-radius:8px;
+padding:15px;
+text-align:left;
+">
+<h3>Υπερθέρμανση Πρίζας</h3>
+
+<p>
+Η υπερθέρμανση μιας πρίζας μπορεί να προκληθεί από διάφορες αιτίες.
+Οι πιο συνηθισμένες είναι:
+</p>
+
+<ul>
+<li><b>Χαλαρή σύνδεση αγωγού:</b> όταν ο αγωγός δεν είναι καλά σφιγμένος στον ακροδέκτη, αυξάνεται η αντίσταση επαφής και δημιουργείται θερμότητα.</li>
+
+<li><b>Υπερφόρτωση κυκλώματος:</b> όταν συνδέονται πολλές συσκευές με μεγάλη ισχύ στην ίδια πρίζα, το ρεύμα αυξάνεται και μπορεί να προκληθεί υπερθέρμανση των αγωγών και των επαφών.</li>
+
+<li><b>Φθαρμένα υλικά:</b> με τον χρόνο οι επαφές της πρίζας μπορεί να χαλαρώσουν ή να αλλοιωθούν.</li>
+</ul>
+
+<p>
+Σε περίπτωση υπερθέρμανσης πρέπει να εντοπιστεί η αιτία και να γίνει
+είτε <b>σφίξιμο των ακροδεκτών</b>, είτε <b>μείωση του φορτίου</b>, είτε
+<b>αντικατάσταση της πρίζας</b> αν έχει υποστεί ζημιά.
+</p>
+</div>
+
+<script>
+const burnedSocket="../images/socket_deformed.png"
+let cause=Math.random()>0.5?"loose":"overload"
+let temperature=25, destroyed=false, wiresDisconnected=0, socketReplaced=false
+let loadReduced=false, selectedWire=null
+let current = cause==="overload" ? 18 : 8
+const socket=document.getElementById("socketImg")
+const msgBox=document.getElementById("msg")
+const tempVal=document.getElementById("tempVal")
+const currentVal=document.getElementById("currentVal")
+currentVal.innerText=current
+let wireStatus={sockL:true, sockPE:true, sockN:true}
+
+// αρχικές συνδέσεις
+drawLine(tPhase,sockL)
+drawLine(tEarth,sockPE)
+drawLine(tNeutral,sockN)
+socket.classList.add("overheat")
+
+if(cause==="loose"){
+  msgBox.innerText="⚠️ Πιθανή χαλαρή σύνδεση στον ακροδέκτη L."
+  sockL.classList.add("loose")
+}else{
+  msgBox.innerText="⚠️ Υπερφόρτωση γραμμής."
+}
+
+// σφίξιμο χαλαρού ακροδέκτη L
+sockL.addEventListener("click",()=>{
+  if(cause!=="loose" || destroyed) return
+  sockL.classList.remove("loose")
+  socket.classList.remove("overheat")
+  socket.classList.add("fixed-green")
+  msgBox.innerText="🔧 Ο ακροδέκτης L σφίχτηκε. Η επαφή αποκαταστάθηκε."
+  coolDown()
+})
+
+// αύξηση θερμοκρασίας
+let heatInterval = setInterval(()=>{
+    if(destroyed) return
+    if((cause==="loose" && !sockL.classList.contains("loose")) || (cause==="overload" && loadReduced)){
+        clearInterval(heatInterval)
+        coolDown()
+        return
+    }
+    temperature += 4
+    tempVal.innerText=temperature
+    if(cause==="loose"){
+      let r=sockL.getBoundingClientRect()
+      let area=document.getElementById("area").getBoundingClientRect()
+      spark(r.left-area.left, r.top-area.top)
+    }
+    if(cause==="overload") currentVal.innerText=current
+    if(temperature>120) destroySocket()
+},600)
+
+function destroySocket(){
+  destroyed=true
+  socket.src=burnedSocket
+  socket.classList.remove("overheat")
+  msgBox.innerText="🔥 Η πρίζα παραμορφώθηκε. Η ασφάλεια έπεσε."
+  document.getElementById("breakerBtn").disabled=false
+  smokeEffect()
+}
+
+// αποσύνδεση καλωδίων πριν αντικατάσταση
+document.querySelectorAll(".wire-end").forEach(w=>{
+  w.onclick=function(){
+    if(destroyed && !socketReplaced){
+      if(wireStatus[this.id]){
+        this.style.opacity="0.3"
+        wireStatus[this.id]=false
+        wiresDisconnected++
+        msgBox.innerText=wiresDisconnected===3?"✔ Όλα τα καλώδια αποσυνδέθηκαν.":"Αποσυνδέθηκε καλώδιο."
+        document.getElementById("replaceBtn").style.display=wiresDisconnected===3?"inline-block":"none"
+      }
+    }
+  }
+})
+
+// αντικατάσταση πρίζας
+function replaceSocket(){
+  if(wiresDisconnected<3){ msgBox.innerText="Αποσυνδέστε πρώτα τα καλώδια."; return }
+  socket.src="../images/socket_1.png"
+  socketReplaced=true
+  msgBox.innerText="🔄 Νέα πρίζα τοποθετήθηκε. Τράβηξε τα καλώδια για σύνδεση."
+  document.getElementById("svg").innerHTML=""
+  socket.classList.add("fixed-green")
+  socket.classList.remove("overheat")
+  wiresDisconnected=0
+  wireStatus={sockL:false, sockPE:false, sockN:false}
+  document.querySelectorAll(".wire-end").forEach(w=>{ w.style.opacity="1" })
+}
+
+// drag & connect wires μετά αντικατάσταση
+document.querySelectorAll(".wire-end").forEach(w=>{
+  w.addEventListener("click",()=>{
+    if(!socketReplaced) return
+    selectedWire=w
+    w.classList.add("selected")
+    msgBox.innerText="Επίλεξε τον αντίστοιχο ακροδέκτη παροχής."
+  })
+})
+document.querySelectorAll(".terminal").forEach(t=>{
+  t.addEventListener("click",()=>{
+    if(!socketReplaced || !selectedWire) return
+    let correct=false
+    if(selectedWire.id==="sockL" && t.id==="tPhase") correct=true
+    if(selectedWire.id==="sockN" && t.id==="tNeutral") correct=true
+    if(selectedWire.id==="sockPE" && t.id==="tEarth") correct=true
+    if(correct){
+      drawLine(t,selectedWire)
+      wireStatus[selectedWire.id]=true
+      msgBox.innerText="✔ Το καλώδιο συνδέθηκε σωστά."
+    } else { msgBox.innerText="⚠️ Λάθος σύνδεση καλωδίου." }
+    selectedWire.classList.remove("selected")
+    selectedWire=null
+  })
+})
+
+// σήκωμα ασφάλειας
+function raiseBreaker(){
+  if(!socketReplaced){ msgBox.innerText="Πρέπει πρώτα να αντικαταστήσετε την πρίζα."; return }
+  if(!wireStatus.sockL || !wireStatus.sockPE || !wireStatus.sockN){ msgBox.innerText="❌ Πρέπει να συνδέσετε όλα τα καλώδια για να σηκώσετε την ασφάλεια."; return }
+  if(cause==="overload" && !loadReduced){ msgBox.innerText="❌ Πρέπει πρώτα να μειώσετε το φορτίο της πρίζας."; return }
+  msgBox.innerText="⚡ Η ασφάλεια επανήλθε. Το κύκλωμα λειτουργεί."
+  coolDown()
+}
+
+// μείωση φορτίου
+function reduceLoad(){
+  if(cause==="overload"){ 
+    current = 6
+    currentVal.innerText=current
+    msgBox.innerText="✔ Το φορτίο μειώθηκε."
+    loadReduced=true
+    coolDown()
+    socket.classList.add("fixed-green")
+    socket.classList.remove("overheat")
+  } else msgBox.innerText="❌ Δεν πρόκειται για υπερφόρτωση."
+}
+
+// ψύξη
+let coolInterval=null
+function coolDown(){
+  if(coolInterval) clearInterval(coolInterval)
+  coolInterval = setInterval(()=>{
+    temperature -=4
+    if(temperature<=25){ temperature=25; clearInterval(coolInterval); coolInterval=null }
+    tempVal.innerText=temperature
+  },500)
+}
+
+// spark effect
+function spark(x,y){
+  let s=document.createElement("div")
+  s.className="spark"
+  s.style.left=x+"px"
+  s.style.top=y+"px"
+  document.getElementById("area").appendChild(s)
+  setTimeout(()=>s.remove(),300)
+}
+
+// smoke effect
+function smokeEffect(){
+  for(let i=0;i<10;i++){
+    let s=document.createElement("div")
+    s.className="smoke"
+    s.style.left=(100+Math.random()*60)+"px"
+    s.style.top="200px"
+    document.getElementById("area").appendChild(s)
+    setTimeout(()=>s.remove(),1000)
+  }
+}
+
+// drawLine
+function drawLine(a,b){
+  const line=document.createElementNS("http://www.w3.org/2000/svg","line")
+  const r1=a.getBoundingClientRect()
+  const r2=b.getBoundingClientRect()
+  const area=document.getElementById("area").getBoundingClientRect()
+  line.setAttribute("x1",r1.left-area.left+9)
+  line.setAttribute("y1",r1.top-area.top+9)
+  line.setAttribute("x2",r2.left-area.left+9)
+  line.setAttribute("y2",r2.top-area.top+9)
+  line.setAttribute("stroke","black")
+  line.setAttribute("stroke-width","4")
+  document.getElementById("svg").appendChild(line)
+}
+
+// toggle theory
+function toggleTheory(){
+  const box=document.getElementById("theoryBox")
+  box.style.display = box.style.display==="none" ? "block" : "none"
+}
+</script>
+</body>
+</html>

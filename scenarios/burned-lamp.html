@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Σενάριο Βλάβης – Καμένη Λάμπα</title>
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 60px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .panel {
+      text-align: center;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 220px;
+    }
+
+    .lamp {
+      width: 140px;
+      transition: 0.5s;
+      margin-bottom: 10px;
+    }
+
+    .lamp.off {
+      filter: grayscale(100%) brightness(60%);
+      animation: flicker 1s infinite;
+    }
+
+    .lamp.on {
+      filter: brightness(120%);
+      animation: none;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 0.7; }
+      25% { opacity: 0.4; }
+      50% { opacity: 0.6; }
+      75% { opacity: 0.3; }
+      100% { opacity: 0.7; }
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #1e90ff;
+      color: white;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0d6efd;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .correct { color: green; }
+
+    .info {
+      background: #fff;
+      padding: 20px;
+      margin-top: 30px;
+      border-left: 5px solid #007acc;
+      border-radius: 5px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Σενάριο Βλάβης – Καμένη Λάμπα</h1>
+
+<p>
+Το κύκλωμα είναι σωστά συνδεδεμένο, όμως η λάμπα δεν ανάβει.
+</p>
+
+<div class="container">
+
+  <!-- Παροχή -->
+  <div class="panel">
+    <h3>Παροχή</h3>
+    <p>220V</p>
+  </div>
+
+  <!-- Λάμπα -->
+  <div class="panel">
+    <h3>Λάμπα</h3>
+    <img src="../images/lamp_off.png" id="lamp" class="lamp off">
+    <br>
+    <button onclick="replaceLamp()">Αντικατάσταση Λάμπας</button>
+  </div>
+
+</div>
+
+<div id="message" class="message"></div>
+
+<div class="info">
+  <h3>Τι συμβαίνει εδώ;</h3>
+  <p>
+    Σε αυτό το σενάριο, το κύκλωμα είναι ηλεκτρολογικά σωστό, όμως η λάμπα είναι καμένη.
+    Παρότι υπάρχει τάση και σωστή συνδεσμολογία, το φορτίο δεν λειτουργεί.
+  </p>
+  <p>
+    Η ενδεδειγμένη ενέργεια είναι η αντικατάσταση της λάμπας για να αποκατασταθεί ο φωτισμός.
+  </p>
+</div>
+
+<script>
+  const lamp = document.getElementById("lamp");
+  const message = document.getElementById("message");
+
+  function replaceLamp() {
+    lamp.src = "../images/lamp_on.png";
+    lamp.classList.remove("off");
+    lamp.classList.add("on");
+
+    message.innerHTML = "✔️ Η λάμπα αντικαταστάθηκε και το κύκλωμα λειτουργεί κανονικά.";
+    message.className = "message correct";
+  }
+</script>
+
+</body>
+</html>

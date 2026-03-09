@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Forum Συζητήσεων</title>
+
+  <!-- Κεντρικό CSS -->
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #f3f6fb, #ffffff);
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 40px;
+    }
+
+    /* ===== VIEW TOGGLE BUTTON ===== */
+    .view-toggle {
+      max-width: 1100px;
+      margin: 0 auto 20px auto;
+      text-align: right;
+    }
+
+    .view-toggle button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #333;
+      color: white;
+      font-size: 14px;
+    }
+
+    .view-toggle button:hover {
+      background: #000;
+    }
+
+    /* ===== GRID ===== */
+    .forum-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    /* ===== LIST VIEW ===== */
+    .forum-grid.list-view {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .forum-grid.list-view .forum-card {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .forum-grid.list-view .forum-card img {
+      width: 180px;
+      height: 120px;
+    }
+
+    .forum-grid.list-view .forum-content {
+      flex: 1;
+    }
+
+    /* ===== CARDS ===== */
+    .forum-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .forum-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .forum-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .forum-content {
+      padding: 20px;
+      flex-grow: 1;
+    }
+
+    .forum-content h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .forum-content p {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .forum-footer {
+      padding: 15px 20px;
+      border-top: 1px solid #eee;
+      text-align: right;
+    }
+
+    .forum-footer button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      color: white;
+    }
+
+    .btn-blue { background-color: #1976d2; }
+    .btn-green { background-color: #388e3c; }
+    .btn-orange { background-color: #f57c00; }
+    .btn-purple { background-color: #7b1fa2; }
+
+    .btn-blue:hover { background-color: #0d47a1; }
+    .btn-green:hover { background-color: #1b5e20; }
+    .btn-orange:hover { background-color: #e65100; }
+    .btn-purple:hover { background-color: #4a148c; }
+
+    .bar-blue { border-top: 5px solid #1976d2; }
+    .bar-green { border-top: 5px solid #388e3c; }
+    .bar-orange { border-top: 5px solid #f57c00; }
+    .bar-purple { border-top: 5px solid #7b1fa2; }
+  </style>
+</head>
+
+<body>
+
+<h1>Forum Συζητήσεων</h1>
+<div class="subtitle">
+  Χώρος ανταλλαγής γνώσεων, ερωτήσεων και εκπαιδευτικών ιδεών
+</div>
+
+<!-- VIEW - HOME BUTTON -->
+<div class="view-toggle">
+  <a href="../index.html">
+    <button style="margin-right: 10px; background:#1976d2;">🏠 Home</button>
+  </a>
+  <button id="viewBtn">Grid View</button>
+</div>
+
+<!-- DEFAULT LIST VIEW -->
+<div class="forum-grid list-view" id="forumContainer">
+
+  <div class="forum-card bar-blue">
+    <img src="../images/forum-questions.jpg" alt="Ερωτήσεις μαθητών">
+    <div class="forum-content">
+      <h3>Ερωτήσεις Μαθητών</h3>
+      <p>Απορίες σχετικά με κυκλώματα, θεωρία και προσομοιώσεις.</p>
+    </div>
+    <div class="forum-footer">
+      <button class="btn-blue"
+        onclick="location.href='theory-forum.html'">Είσοδος</button>
+    </div>
+  </div>
+
+  <div class="forum-card bar-green">
+    <img src="../images/forum-scenarios.jpg" alt="Σενάρια βλαβών">
+    <div class="forum-content">
+      <h3>Σενάρια Βλαβών</h3>
+      <p>Συζήτηση πραγματικών περιπτώσεων και λύσεων.</p>
+    </div>
+    <div class="forum-footer">
+      <button class="btn-green"
+        onclick="location.href='scenarios-forum.html'">Είσοδος</button>
+    </div>
+  </div>
+
+  <div class="forum-card bar-orange">
+    <img src="../images/forum-homework.jpg" alt="Ασκήσεις">
+    <div class="forum-content">
+      <h3>Ασκήσεις & Homework</h3>
+      <p>Ανάλυση ασκήσεων και βοήθεια στην κατανόηση.</p>
+    </div>
+    <div class="forum-footer">
+      <button class="btn-orange"
+        onclick="location.href='homework-forum.html'">Είσοδος</button>
+    </div>
+  </div>
+
+  <div class="forum-card bar-purple">
+    <img src="../images/forum-ideas.jpg" alt="Ιδέες">
+    <div class="forum-content">
+      <h3>Ιδέες & Προτάσεις</h3>
+      <p>Προτάσεις για νέες λειτουργίες και σενάρια.</p>
+    </div>
+    <div class="forum-footer">
+      <button class="btn-purple"
+        onclick="location.href='ideas-forum.html'">Είσοδος</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== SCRIPT ΓΙΑ TOGGLE ===== -->
+<script>
+  const viewBtn = document.getElementById("viewBtn");
+  const container = document.getElementById("forumContainer");
+
+  viewBtn.addEventListener("click", function () {
+    container.classList.toggle("list-view");
+
+    if (container.classList.contains("list-view")) {
+      viewBtn.textContent = "Grid View";
+    } else {
+      viewBtn.textContent = "List View";
+    }
+  });
+</script>
+
+</body>
+</html>
