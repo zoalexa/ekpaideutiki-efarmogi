@@ -13,32 +13,54 @@
 --muted:#6b7a8a;
 }
 
+/* GLOBAL */
+
 body{
 margin:0;
 font-family:"Segoe UI",Tahoma,sans-serif;
-background:var(--bg);
+background:linear-gradient(135deg,#eef3ff,#f9fbff);
 color:#17202a;
 }
 
-header{
-background:linear-gradient(90deg,var(--accent),#246fb0);
+::selection{
+background:#1e90ff;
 color:white;
+}
+
+/* HEADER */
+
+header{
+position:sticky;
+top:0;
+z-index:100;
+
+background:linear-gradient(90deg,#1e90ff,#6a5acd);
+color:white;
+
 padding:16px 22px;
+
 display:flex;
 align-items:center;
 gap:14px;
+
+box-shadow:0 4px 15px rgba(0,0,0,0.15);
 }
 
 header h1{
 margin:0;
 font-size:1.2rem;
+letter-spacing:1px;
 }
+
+/* LAYOUT */
 
 .wrap{
 display:flex;
 gap:20px;
 padding:20px;
 }
+
+/* SIDEBAR */
 
 .list{
 width:340px;
@@ -47,6 +69,18 @@ border-radius:12px;
 padding:16px;
 border:1px solid rgba(0,0,0,0.08);
 box-shadow:0 6px 18px rgba(0,0,0,0.06);
+position:relative;
+overflow:hidden;
+}
+
+.list::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:5px;
+height:100%;
+background:linear-gradient(#1e90ff,#06d6a0,#ff7a18);
 }
 
 .list h2{
@@ -54,33 +88,46 @@ margin-top:0;
 color:var(--accent);
 }
 
+/* SEARCH */
+
 .search{
 width:100%;
-padding:8px;
-border-radius:8px;
-border:1px solid #ccc;
-margin-bottom:12px;
+padding:10px 12px;
+border-radius:10px;
+border:1px solid #d0d7e2;
+outline:none;
+margin-bottom:14px;
+transition:0.2s;
 }
+
+.search:focus{
+border-color:#1e90ff;
+box-shadow:0 0 0 3px rgba(30,144,255,0.15);
+}
+
+/* TERMS */
 
 .term{
 display:flex;
 flex-direction:column;
-padding:10px;
+padding:12px;
 border-radius:10px;
 cursor:pointer;
-margin-bottom:8px;
-transition:0.2s;
-border:1px solid transparent;
+margin-bottom:10px;
+transition:all 0.2s ease;
+background:#f8fbff;
+border:1px solid rgba(0,0,0,0.05);
 }
 
 .term:hover{
 background:#eef6ff;
-border-color:#cfe6ff;
+transform:translateX(4px);
 }
 
 .term.active{
-background:#dceeff;
+background:linear-gradient(90deg,#dceeff,#eef6ff);
 border-color:#7fbfff;
+box-shadow:0 6px 15px rgba(0,0,0,0.08);
 }
 
 .term .title{
@@ -92,20 +139,65 @@ font-size:0.85rem;
 color:var(--muted);
 }
 
+/* CONTENT */
+
 .content{
 flex:1;
-background:var(--card);
-border-radius:12px;
-padding:24px;
-border:1px solid rgba(0,0,0,0.08);
+background:linear-gradient(180deg,#ffffff,#f8fbff);
+border-radius:14px;
+padding:28px;
+border:1px solid rgba(0,0,0,0.06);
 min-height:420px;
-box-shadow:0 6px 18px rgba(0,0,0,0.06);
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
 .content h2{
 margin-top:0;
 color:var(--accent);
 }
+
+.content h3{
+margin-top:20px;
+margin-bottom:8px;
+color:#1e90ff;
+font-size:1.1rem;
+}
+
+.content p{
+margin:0 0 10px;
+}
+
+/* FLEX CONTENT */
+
+.content-flex{
+display:flex;
+gap:30px;
+align-items:flex-start;
+flex-wrap:wrap;
+}
+
+.text-part{
+flex:1;
+font-size:1.05rem;
+line-height:1.7;
+}
+
+.img-part{
+flex:0 0 260px;
+}
+
+.img-part img{
+width:100%;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+transition:0.3s;
+}
+
+.img-part img:hover{
+transform:scale(1.05);
+}
+
+/* ANIMATION */
 
 .fade{
 animation:fadeIn 0.35s ease;
@@ -116,6 +208,8 @@ from{opacity:0;transform:translateY(6px)}
 to{opacity:1;transform:translateY(0)}
 }
 
+/* BUTTONS */
+
 .btn-row{
 display:flex;
 gap:10px;
@@ -124,13 +218,19 @@ flex-wrap:wrap;
 }
 
 .btn{
-background:var(--accent);
+background:linear-gradient(90deg,#1e90ff,#6a5acd);
 color:white;
 border:none;
-padding:9px 14px;
+padding:10px 16px;
 border-radius:8px;
 cursor:pointer;
 font-size:0.9rem;
+transition:0.2s;
+}
+
+.btn:hover{
+transform:translateY(-2px);
+box-shadow:0 6px 15px rgba(0,0,0,0.15);
 }
 
 .btn.alt{
@@ -167,9 +267,7 @@ display:none;
 <div class="wrap">
 
 <aside class="list">
-
 <h2>Όροι</h2>
-
 <input class="search" placeholder="Αναζήτηση όρου..." id="searchBox">
 
 <div id="termsContainer">
@@ -179,44 +277,29 @@ display:none;
 <div class="short">Η μορφή ρεύματος των οικιακών δικτύων</div>
 </div>
 
-<div class="term" data-key="circuit">
-<div class="title">Ηλεκτρικό Κύκλωμα</div>
-<div class="short">Σύνολο συνδεδεμένων ηλεκτρικών στοιχείων</div>
+<div class="term" data-key="voltage">
+<div class="title">Τάση</div>
+<div class="short">Διαφορά δυναμικού</div>
 </div>
 
-<div class="term" data-key="switch">
-<div class="title">Διακόπτης</div>
-<div class="short">Έλεγχος λειτουργίας κυκλώματος</div>
+<div class="term" data-key="current">
+<div class="title">Ένταση Ρεύματος</div>
+<div class="short">Ροή φορτίου</div>
 </div>
 
-<div class="term" data-key="fuse">
-<div class="title">Ασφάλεια</div>
-<div class="short">Προστασία από υπερφόρτωση</div>
+<div class="term" data-key="resistance">
+<div class="title">Αντίσταση</div>
+<div class="short">Εμπόδιο στο ρεύμα</div>
 </div>
 
-<div class="term" data-key="ground">
-<div class="title">Γείωση</div>
-<div class="short">Προστασία από ηλεκτροπληξία</div>
-</div>
-
-<div class="term" data-key="rcd">
-<div class="title">Ρελέ Διαρροής (RCD)</div>
-<div class="short">Προστασία από διαρροή ρεύματος</div>
-</div>
-
-<div class="term" data-key="socket">
-<div class="title">Πρίζα</div>
-<div class="short">Σημείο σύνδεσης συσκευών</div>
-</div>
-
-<div class="term" data-key="panel">
-<div class="title">Πίνακας Διανομής</div>
-<div class="short">Κεντρικό σημείο εγκατάστασης</div>
+<div class="term" data-key="power">
+<div class="title">Ισχύς</div>
+<div class="short">Κατανάλωση ενέργειας</div>
 </div>
 
 <div class="term" data-key="short">
 <div class="title">Βραχυκύκλωμα</div>
-<div class="short">Άμεση επαφή φάσης και ουδετέρου</div>
+<div class="short">Επικίνδυνη επαφή αγωγών</div>
 </div>
 
 </div>
@@ -226,8 +309,14 @@ display:none;
 
 <h2 id="defTitle">Επιλέξτε όρο</h2>
 
-<div id="defText" class="muted">
-Κάντε κλικ σε έναν όρο για να εμφανιστεί η επεξήγησή του.
+<div id="defText" class="muted" style="text-align:center;padding-top:40px;">
+<div style="opacity:0.7;">
+📘 Επιλέξτε έναν όρο από τη λίστα  
+<br><br>
+<span style="font-size:0.9rem;">
+ή χρησιμοποιήστε την αναζήτηση
+</span>
+</div>
 </div>
 
 <div class="copy-msg" id="copyMsg">Αντιγράφηκε!</div>
@@ -245,15 +334,239 @@ display:none;
 <script>
 
 const DICT={
-ac:{title:"Εναλλασσόμενο Ρεύμα (AC)",text:"Η μορφή ηλεκτρικού ρεύματος που αλλάζει περιοδικά κατεύθυνση. Χρησιμοποιείται στις οικιακές ηλεκτρικές εγκαταστάσεις."},
-circuit:{title:"Ηλεκτρικό Κύκλωμα",text:"Σύνολο ηλεκτρικών στοιχείων που επιτρέπουν τη ροή ρεύματος μέσα από αγωγούς."},
-switch:{title:"Διακόπτης",text:"Συσκευή που επιτρέπει ή διακόπτει τη ροή ρεύματος σε ένα κύκλωμα."},
-fuse:{title:"Ασφάλεια",text:"Διάταξη προστασίας που διακόπτει το κύκλωμα όταν το ρεύμα υπερβεί επιτρεπτό όριο."},
-ground:{title:"Γείωση",text:"Σύστημα προστασίας που οδηγεί επικίνδυνα ρεύματα προς τη γη."},
-rcd:{title:"Ρελέ Διαρροής",text:"Διακόπτει το ρεύμα όταν εντοπιστεί διαρροή προς τη γείωση."},
-socket:{title:"Πρίζα",text:"Σημείο στο οποίο συνδέονται ηλεκτρικές συσκευές."},
-panel:{title:"Πίνακας Διανομής",text:"Κεντρικός πίνακας που περιέχει ασφάλειες και προστασίες."},
-short:{title:"Βραχυκύκλωμα",text:"Άμεση επαφή αγωγών χαμηλής αντίστασης που προκαλεί μεγάλο ρεύμα."}
+
+ac:{
+title:"Εναλλασσόμενο Ρεύμα (AC)",
+text:`
+<h3>Ορισμός</h3>
+<p>
+Το εναλλασσόμενο ρεύμα είναι η μορφή ηλεκτρικού ρεύματος που αλλάζει περιοδικά κατεύθυνση.
+Αποτελεί τη βασική μορφή ηλεκτρικής ενέργειας που χρησιμοποιείται στις οικιακές εγκαταστάσεις.
+</p>
+
+<h3>Παράδειγμα</h3>
+<p>
+Το ρεύμα που φτάνει στις πρίζες του σπιτιού είναι εναλλασσόμενο (230V στην Ελλάδα).
+</p>
+
+<h3>Σημείωση</h3>
+<p>
+Επιλέγεται γιατί μεταφέρεται πιο εύκολα σε μεγάλες αποστάσεις με μικρές απώλειες.
+</p>
+`,
+img:"images/ac.png"
+},
+
+voltage:{
+title:"Τάση (Voltage)",
+text:`
+<h3>Ορισμός</h3>
+<p>
+Η τάση εκφράζει τη διαφορά δυναμικού μεταξύ δύο σημείων και είναι υπεύθυνη για την κίνηση του ρεύματος μέσα σε ένα κύκλωμα.
+</p>
+
+<h3>Παράδειγμα</h3>
+<p>
+Μια οικιακή πρίζα παρέχει περίπου 230 Volt, που επιτρέπουν τη λειτουργία συσκευών όπως τηλεόραση ή ψυγείο.
+</p>
+
+<h3>Σημείωση</h3>
+<p>
+Υψηλή τάση μπορεί να είναι επικίνδυνη για τον άνθρωπο.
+</p>
+`,
+img:"images/voltage.png"
+},
+
+current:{
+title:"Ένταση Ρεύματος",
+text:`
+<h3>Ορισμός</h3>
+<p>
+Η ένταση του ρεύματος δείχνει πόσο ηλεκτρικό φορτίο περνά από ένα σημείο του κυκλώματος σε συγκεκριμένο χρόνο.
+</p>
+
+<h3>Παράδειγμα</h3>
+<p>
+Μια λάμπα μπορεί να καταναλώνει περίπου 0.3 Ampere όταν λειτουργεί.
+</p>
+
+<h3>Σημείωση</h3>
+<p>
+Μεγάλη ένταση μπορεί να προκαλέσει υπερθέρμανση καλωδίων.
+</p>
+`,
+img:"images/current.png"
+},
+
+resistance:{
+title:"Αντίσταση",
+text:`
+<h3>Ορισμός</h3>
+<p>
+Η αντίσταση είναι το μέγεθος που περιορίζει τη ροή του ηλεκτρικού ρεύματος μέσα σε ένα κύκλωμα.
+</p>
+
+<h3>Παράδειγμα</h3>
+<p>
+Οι αντιστάσεις σε θερμαντικές συσκευές μετατρέπουν την ηλεκτρική ενέργεια σε θερμότητα.
+</p>
+
+<h3>Σημείωση</h3>
+<p>
+Μετριέται σε Ohm (Ω).
+</p>
+`,
+img:"images/resistance.png"
+},
+
+power:{
+title:"Ηλεκτρική Ισχύς",
+text:`
+<h3>Ορισμός</h3>
+<p>
+Η ηλεκτρική ισχύς δείχνει πόση ενέργεια καταναλώνει μια συσκευή ανά μονάδα χρόνου.
+</p>
+
+<h3>Παράδειγμα</h3>
+<p>
+Ένας θερμοσίφωνας μπορεί να έχει ισχύ 3000 Watt.
+</p>
+
+<h3>Σημείωση</h3>
+<p>
+Όσο μεγαλύτερη η ισχύς, τόσο μεγαλύτερη η κατανάλωση ενέργειας.
+</p>
+`,
+img:"images/power.png"
+},
+
+phase:{
+title:"Φάση",
+text:`
+<h3>Ορισμός</h3>
+<p>
+Η φάση είναι ο αγωγός που μεταφέρει το ρεύμα από την πηγή προς τη συσκευή.
+</p>
+
+<h3>Παράδειγμα</h3>
+<p>
+Σε μια πρίζα, η φάση είναι το καλώδιο που “δίνει” το ρεύμα.
+</p>
+
+<h3>Σημείωση</h3>
+<p>
+Είναι επικίνδυνη στην επαφή και απαιτεί προσοχή.
+</p>
+`,
+img:"images/phase.png"
+},
+
+neutral:{
+title:"Ουδέτερος Αγωγός",
+text:`
+<h3>Ορισμός</h3>
+<p>
+Ο ουδέτερος αγωγός επιστρέφει το ρεύμα πίσω στην πηγή ολοκληρώνοντας το κύκλωμα.
+</p>
+
+<h3>Παράδειγμα</h3>
+<p>
+Σε μια πρίζα υπάρχουν φάση και ουδέτερος για τη σωστή λειτουργία των συσκευών.
+</p>
+
+<h3>Σημείωση</h3>
+<p>
+Έχει συνήθως χαμηλό δυναμικό σε σχέση με τη φάση.
+</p>
+`,
+img:"images/neutral.png"
+},
+
+ground:{
+title:"Γείωση",
+text:`
+<h3>Ορισμός</h3>
+<p>
+Η γείωση είναι σύστημα προστασίας που διοχετεύει επικίνδυνα ρεύματα προς το έδαφος.
+</p>
+
+<h3>Παράδειγμα</h3>
+<p>
+Σε περίπτωση βλάβης, το ρεύμα οδηγείται στη γη αντί να περάσει από το σώμα του χρήστη.
+</p>
+
+<h3>Σημείωση</h3>
+<p>
+Είναι απαραίτητη για την ασφάλεια κάθε ηλεκτρικής εγκατάστασης.
+</p>
+`,
+img:"images/ground.png"
+},
+
+fuse:{
+title:"Ασφάλεια",
+text:`
+<h3>Ορισμός</h3>
+<p>
+Η ασφάλεια προστατεύει το κύκλωμα διακόπτοντας το ρεύμα όταν αυτό ξεπεράσει ένα ασφαλές όριο.
+</p>
+
+<h3>Παράδειγμα</h3>
+<p>
+Αν συνδέσουμε πολλές συσκευές, η ασφάλεια μπορεί να πέσει.
+</p>
+
+<h3>Σημείωση</h3>
+<p>
+Προστατεύει από υπερφόρτωση και βραχυκύκλωμα.
+</p>
+`,
+img:"images/fuse.png"
+},
+
+short:{
+title:"Βραχυκύκλωμα",
+text:`
+<h3>Ορισμός</h3>
+<p>
+Το βραχυκύκλωμα είναι η άμεση επαφή φάσης και ουδετέρου χωρίς αντίσταση.
+</p>
+
+<h3>Παράδειγμα</h3>
+<p>
+Ένα φθαρμένο καλώδιο μπορεί να προκαλέσει βραχυκύκλωμα.
+</p>
+
+<h3>Σημείωση</h3>
+<p>
+Προκαλεί πολύ μεγάλο ρεύμα και είναι επικίνδυνο.
+</p>
+`,
+img:"images/short.png"
+},
+
+overload:{
+title:"Υπερφόρτωση",
+text:`
+<h3>Ορισμός</h3>
+<p>
+Η υπερφόρτωση συμβαίνει όταν πολλές συσκευές λειτουργούν ταυτόχρονα στο ίδιο κύκλωμα.
+</p>
+
+<h3>Παράδειγμα</h3>
+<p>
+Πολλά πολύμπριζα σε μία πρίζα μπορεί να ρίξουν την ασφάλεια.
+</p>
+
+<h3>Σημείωση</h3>
+<p>
+Προκαλεί υπερθέρμανση και φθορά καλωδίων.
+</p>
+`,
+img:"images/overload.png"
+}
+
 };
 
 const terms=document.querySelectorAll(".term");
@@ -266,27 +579,38 @@ terms.forEach(x=>x.classList.remove("active"));
 t.classList.add("active");
 
 const k=t.dataset.key;
+
 title.textContent=DICT[k].title;
-text.innerHTML="<p class='fade'>"+DICT[k].text+"</p>";
+
+text.innerHTML=`
+<div class="fade content-flex">
+
+<div class="text-part">
+<p>${DICT[k].text}</p>
+</div>
+
+${DICT[k].img ? `
+<div class="img-part">
+<img src="${DICT[k].img}">
+</div>` : ""}
+
+</div>
+`;
+
+window.scrollTo({top:0,behavior:"smooth"});
 };
 });
 
 document.getElementById("btnClose").onclick=()=>{
 title.textContent="Επιλέξτε όρο";
-text.innerHTML="Κάντε κλικ σε έναν όρο για να εμφανιστεί η επεξήγησή του.";
-};
-
-document.getElementById("btnExpandAll").onclick=()=>{
-title.textContent="Όλοι οι όροι";
-text.innerHTML=Object.values(DICT)
-.map(d=>`<h3 style="color:var(--accent)">${d.title}</h3><p>${d.text}</p>`)
-.join("");
+text.innerHTML="📘 Επιλέξτε έναν όρο από τη λίστα";
 };
 
 document.getElementById("btnCopy").onclick=()=>{
 navigator.clipboard.writeText(text.innerText);
-document.getElementById("copyMsg").style.display="block";
-setTimeout(()=>{document.getElementById("copyMsg").style.display="none"},1200);
+const msg=document.getElementById("copyMsg");
+msg.style.display="block";
+setTimeout(()=>msg.style.display="none",1200);
 };
 
 document.getElementById("searchBox").oninput=function(){
