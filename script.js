@@ -2,12 +2,12 @@ window.onload = function() {
 
     // κουμπί γλωσσάριο
     document.getElementById("btnGlos").onclick = function() {
-        window.open("data/glos.html", "_blank");
+        window.location.href = "data/glos.html";
     };
 
     // κουμπί video lessons
     document.getElementById("btnVideos").onclick = function() {
-        window.open("data/videos.html", "_blank");
+        window.location.href = "data/videos.html";
     };
 
 
@@ -26,9 +26,9 @@ function closeHelpModal() {
 }
 
 function openHomework() {
-  window.open("homework/homework.html", "_blank");
+  window.location.href = "homework/homework.html";
 }
 
 function openForum() {
-  window.open("forum/forum.html", "_blank");
+  window.location.href = "forum/forum.html";
 }
