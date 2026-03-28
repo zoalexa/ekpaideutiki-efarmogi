@@ -121,10 +121,28 @@ button {
   padding:15px;
   text-align:left;
 }
+
+    .top-nav{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:20px;
+    }
+
+    .top-nav button{
+      padding:8px 16px;
+      border-radius:6px;
+      font-size:14px;
+    }
+
 </style>
 </head>
 
 <body>
+
+<div class="top-nav">
+  <button onclick="goHome()">🏠 Αρχική</button>
+  <button onclick="goScenarios()">🔙 Σενάρια</button>
+</div>
 
 <header>
 <h2>Σενάριο – Ελαττωματικός Διακόπτης</h2>
@@ -325,6 +343,15 @@ function toggleTheory(){
 
 // Σχεδιάζουμε αρχικές γραμμές στον χαλασμένο διακόπτη
 redrawLines();
+
+  function goHome(){
+    window.location.href = "../index.html";
+  }
+
+  function goScenarios(){
+    window.location.href = "scenarios.html";
+  }
+
 </script>
 
 </body>
