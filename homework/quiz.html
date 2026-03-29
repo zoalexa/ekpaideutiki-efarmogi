@@ -263,8 +263,9 @@ function startQuiz(level) {
     case 5: page = "random-exam.html"; break;
   }
 
-  window.open(page, "_blank");
-}
+  function openScenario(file) {
+    window.location.href = file;
+  }
 
 /* ===== VIEW TOGGLE ===== */
 function toggleView() {
